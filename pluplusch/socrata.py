@@ -5,6 +5,9 @@ try:
     from urllib.parse import urljoin
 except ImportError:
     from urlparse import urljoin
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 catalogs = [
     'https://data.colorado.gov',
@@ -88,5 +91,8 @@ def download(get, domain):
             }.get(dataset['displayType'])
             if func == None:
                 func = lambda a, b: None
-            dataset['download'] = func(get, dataset['id']) 
+            try:
+                dataset['download'] = func(get, dataset['id']) 
+            except Exception as e:
+                logger.error(e)
             yield dataset
