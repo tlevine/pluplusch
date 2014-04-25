@@ -1,5 +1,6 @@
 from pickle_warehouse import Warehouse
 from picklecache import downloader
+import requests
 
 import pluplusch.index as i
  

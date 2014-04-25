@@ -1,9 +1,11 @@
+from importlib import import_module
+
 softwares = ['azavea','ckan','junar','opendatasoft','socrata']
 
-def submodules(softwares):
-    return {software: __import__('pluplush.%s' % software) for software in softwares}
+def submodules(softwares = softwares):
+    return {software: import_module('pluplusch.%s' % software) for software in softwares}
 
-def catalogs(submodules):
+def catalogs(submodules = submodules(softwares)):
     for software, module in submodules.items():
         for catalog in getattr(module, 'catalogs'):
             yield catalog, software
