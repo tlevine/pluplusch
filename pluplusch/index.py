@@ -20,7 +20,7 @@ def catalog_to_software(catalog, lookup = {}):
         if catalog.startswith('http'):
             msg = "I don't know the software that \"%s\" uses." % catalog
         else:
-            msg = "I don't know \"%s\"; try adding \"http://\" in front of the URL." % catalog
+            msg = "I don't know \"%s\"; try adding \"https://\" or \"http://\" in front of the URL." % catalog
         raise ValueError(msg)
 
 def all_catalogs():
