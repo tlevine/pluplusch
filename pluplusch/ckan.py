@@ -2,8 +2,8 @@ import json
 import functools, itertools
 from urllib.parse import urljoin
 
-import requests
-from pickle_warehouse import Warehouse
+catalogs = [
+]
 
 def dataset_ids(get, catalog, page):
     url = urljoin(catalog, '/api/search/dataset?q=&start=%d' % page)
@@ -18,7 +18,7 @@ def dataset(get, catalog, datasetid):
     dataset['catalog'] = catalog
     return dataset
 
-def download(get, warehouse, catalog):
+def download(get, catalog):
     dataset_ids_page = functools.partial(dataset_ids, get, catalog)
     for page in itertools.count(1):
         result = dataset_ids_page(page)
