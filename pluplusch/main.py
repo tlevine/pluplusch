@@ -36,7 +36,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
     while generators != {}:
         with ThreadPoolExecutor(len(generators)) as e:
             datasets = e.map(f, generators.values())
-            for catalog, dataset in zip(generators.keys(), datasets):
+            for catalog, dataset in zip(list(generators.keys()), datasets):
                 if dataset == None:
                     del(generators[catalog])
                 else:
