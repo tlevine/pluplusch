@@ -22,5 +22,22 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
         # Use all catalogs.
         catalogs = list(i.all_catalogs())
 
-    for catalog in catalogs:
-        yield from getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog)
+    generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog) for catalog in catalogs}
+    def f(generator):
+        try:
+            result = next(generator)
+        except StopIteration:
+            result = None
+        except Exception as e:
+            result = None
+            print(e)
+        return result
+
+    while generators != {}:
+        with ThreadPoolExecutor(len(generators)) as e:
+            datasets = e.map(f, generators.values())
+            for catalog, dataset in zip(generators.keys(), datasets):
+                if dataset == None:
+                    del(generators[catalog])
+                else:
+                    yield dataset
