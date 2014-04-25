@@ -72,8 +72,14 @@ catalogs = [
 def page(get, domain_with_scheme, page_number):
     full_url = urljoin(domain_with_scheme, '/api/views?page=%d' % page_number)
     response = get(full_url)
-    search_results = json.loads(response.text)
-    return search_results
+    datasets = json.loads(response.text)
+    for dataset in datasets:
+        dataset['download'] = csv(get, dataset['identifier'])
+        yield dataset
+
+def csv(get, identifier):
+    url = 'https://data.cityofnewyork.us/api/views/%s/rows.csv?accessType=DOWNLOAD' % identifier
+    return get(url)
 
 def download(get, domain):
     pages = (page(get, domain, page_number) for page_number in itertools.count(1))
