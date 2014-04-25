@@ -13,8 +13,10 @@ def apikey(get, catalog, datetime):
     return data['pApiKey']
 
 def search(get, catalog, terms, apikey, page):
-    args = (catalog.replace('opendata.junar.com', 'cloudapi.junar.com'), quote(terms), apikey, 
-    url = 'http://%s/datastreams/search?query=%s&auth_key=%s' % args
+    args = (catalog.replace('opendata.junar.com', 'cloudapi.junar.com'), quote(terms), apikey)
+    url = '%s/datastreams/search?query=%s&auth_key=%s' % args
+    print(url)
+    1/0
     response = get(url)
     print(response.text)
     1/0
