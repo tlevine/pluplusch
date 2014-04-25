@@ -76,6 +76,6 @@ def page(get, domain_with_scheme, page_number):
     return search_results
 
 def download(get, domain):
-    for page_number in itertools.count(1):
-        for search_results in itertools.takewhile(lambda x: x != [], page(get, domain, page_number)):
-            yield from search_results
+    pages = (page(get, domain, page_number) for page_number in itertools.count(1))
+    for search_results in itertools.takewhile(lambda x: x != [], pages):
+        yield from search_results
