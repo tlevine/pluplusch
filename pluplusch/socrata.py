@@ -82,5 +82,5 @@ def download(get, domain):
     pages = (page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         for dataset in search_results:
-            dataset['download'] = csv(get, dataset['identifier'])
+            dataset['download'] = None if dataset["displayType"] == 'href' else csv(get, dataset['identifier'])
             yield dataset
