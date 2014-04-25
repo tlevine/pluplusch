@@ -1,4 +1,4 @@
-softwares = ['ckan','opendatasoft']
+softwares = ['azavea','ckan','junar','opendatasoft','socrata']
 
 def submodules(softwares):
     return {software: __import__('pluplush.%s' % software) for software in softwares}
