@@ -4,8 +4,16 @@ import requests
 
 import pluplusch.index as i
  
+
+_get = downloader(lambda url: requests.get(url, proxies = proxies), Warehouse(cache_dir, mutable = False))
+def get(url):
+    response = _get(url)
+    if response.ok:
+        return response
+    else:
+        raise ValueError('%d response at %s' % (response.status_code, url))
+
 def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
-    get = downloader(lambda url: requests.get(url, proxies = proxies), Warehouse(cache_dir, mutable = False))
     submodules = i.submodules()
 
     if catalogs == None:
