@@ -4,7 +4,6 @@ import requests
 
 import pluplusch.index as i
  
-
 def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
 
     _get = downloader(lambda url: requests.get(url, proxies = proxies), Warehouse(cache_dir, mutable = False))
@@ -21,6 +20,12 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
         # Use all catalogs.
         catalogs = list(i.all_catalogs())
 
-    for catalog in catalogs:
-        software = i.catalog_to_software(catalog)
-        yield from getattr(submodules[software], 'download')(get, catalog)
+    generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog) for catalog in catalogs}
+    while generators != {}:
+        for catalog in list(generators.keys()):
+            try:
+                dataset = next(generators[catalog])
+            except StopIteration:
+                del(generators[catalog])
+            else:
+                yield dataset
