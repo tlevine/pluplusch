@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+
 from pickle_warehouse import Warehouse
 from picklecache import downloader
 import requests
@@ -20,12 +22,5 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
         # Use all catalogs.
         catalogs = list(i.all_catalogs())
 
-    generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog) for catalog in catalogs}
-    while generators != {}:
-        for catalog in list(generators.keys()):
-            try:
-                dataset = next(generators[catalog])
-            except StopIteration:
-                del(generators[catalog])
-            else:
-                yield dataset
+    for catalog in catalogs:
+        yield from getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog)
