@@ -1,14 +1,16 @@
 from concurrent.futures import ThreadPoolExecutor
 
 from pickle_warehouse import Warehouse
-from picklecache import downloader
+from picklecache import cache
 import requests
 
 import pluplusch.index as i
  
 def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
 
-    _get = downloader(lambda url: requests.get(url, proxies = proxies), Warehouse(cache_dir, mutable = False))
+    @cache(cache_dir, mutable = False)
+    def _get(url):
+        return requests.get(url, proxies = proxies)
     def get(url):
         response = _get(url)
         if response.ok:
