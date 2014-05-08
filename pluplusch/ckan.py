@@ -1,3 +1,4 @@
+import datetime
 import json
 import functools, itertools
 from urllib.parse import urljoin
@@ -95,4 +96,10 @@ def download(get, catalog, _):
 
 def standardize(original):
     return {
+        "url": original["ckan_url"],
+        "title": original["title"],
+        "creator_name": original.get("maintainer", original["author"]),
+        "creator_id": original.get("maintainer_email", original["author_email"]), 
+        "date": datetime.datetime.strptime(original.get('metadata_modified', original['metadata_created']).split('.')[0], '%Y-%m-%dT%H:%M:%S'),
+        "tags": set(original['tags']),
     }

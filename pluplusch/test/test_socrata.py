@@ -71,7 +71,7 @@ def test_standardize():
     observed = socrata.standardize(original)
     expected = {
         'url': 'https://healthmeasures.aspe.hhs.gov/d/t6ck-kg3u',
-        "name": "Measure Overviews",
+        "title": "Measure Overviews",
         "creator_name" : "Erin Miller",
         "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
         "date": datetime.datetime(2014, 4, 9, 20, 39, 43),

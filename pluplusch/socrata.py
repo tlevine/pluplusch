@@ -109,7 +109,7 @@ def download(get, domain, data):
 def standardize(original):
     return {
         'url': '%(catalog)s/d/%(id)s' % original,
-        'name': original['name'],
+        'title': original['name'],
         'creator_name' : original['owner']['displayName'],
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],
         'date': datetime.datetime.fromtimestamp(max(original[key] for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified'])),

@@ -48,7 +48,7 @@ def download(get, catalog, data):
 def standardize(original):
     return {
         'url': '%(catalog)s/explore/dataset/%(datasetid)s' % original,
-        "name": original['metas']['title'],
+        "title": original['metas']['title'],
         "creator_name" : original['metas']['publisher'],
         "creator_id": None,
         "date": datetime.datetime.strptime(original['metas']['modified'], '%Y-%m-%dT%H:%M:%S+00:00'),

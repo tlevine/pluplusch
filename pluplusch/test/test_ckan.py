@@ -1,3 +1,4 @@
+import datetime
 from collections import namedtuple
 
 import nose.tools as n
@@ -105,7 +106,7 @@ def test_standardize():
         "title": "Adequa\u00e7\u00e3o de acesso rodovi\u00e1rio",
         "creator_name": "Ernesto Batista da Silva Filho",
         "creator_id": "ernesto.silva-filho@planejamento.gov.br",
-        "date": None,
+        "date": datetime.datetime(2013, 12, 3, 14, 38, 48),
         "tags": {"INDE"},
     }
     n.assert_dict_equal(observed, expected)
