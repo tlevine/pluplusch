@@ -31,7 +31,7 @@ def dataset_download(get, catalog, datasetid):
     url = '%s/explore/dataset/%s/download/?format=csv' % (catalog, datasetid)
     return get(url)
 
-def download(get, catalog, data):
+def download(get, catalog, data, do_standardize):
     '''
     Download everything from an OpenDataSoft catalog.
     '''
