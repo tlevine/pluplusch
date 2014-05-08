@@ -61,10 +61,11 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
     generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog, data) for catalog in catalogs}
     def f(generator):
         try:
-            result = next(generator)
+            return next(generator)
         except StopIteration:
-            result = None
-        return result
+            pass
+        except Exception as e:
+            logger.error(e)
 
     while generators != {}:
         with ThreadPoolExecutor(len(generators)) as e:
