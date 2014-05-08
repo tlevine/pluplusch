@@ -44,5 +44,12 @@ def download(get, catalog, data):
             logger.error(e)
             break
 
-def standardize(_):
-    return {}
+def standardize(original):
+    return {
+        'url': '%(catalog)s/d/%(id)s' % original,
+        "name": "Measure Overviews",
+        "creator_name" : "Erin Miller",
+        "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
+        "date": None,
+        "tags" : {"measures"},
+    }

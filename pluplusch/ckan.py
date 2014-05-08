@@ -93,5 +93,6 @@ def download(get, catalog, _):
                     logger.error(e)
                     break
 
-def standardize(_):
-    return {}
+def standardize(original):
+    return {
+    }

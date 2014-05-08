@@ -1,3 +1,4 @@
+import datetime
 import json
 import functools
 import itertools
@@ -105,5 +106,12 @@ def download(get, domain, data):
                 logger.error(e)
                 break
 
-def standardize(_):
-    return {}
+def standardize(original):
+    return {
+        'url': '%(catalog)s/d/%(id)s' % original,
+        'name': original['name'],
+        'creator_name' : original['owner']['displayName'],
+        'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],
+        'date': datetime.datetime.fromtimestamp(max(original[key] for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified'])),
+        'tags' : set(original['tags']),
+    }

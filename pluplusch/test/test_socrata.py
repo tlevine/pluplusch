@@ -1,3 +1,4 @@
+import datetime
 from collections import namedtuple
 
 import nose.tools as n
@@ -73,7 +74,7 @@ def test_standardize():
         "name": "Measure Overviews",
         "creator_name" : "Erin Miller",
         "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
-        "date": None,
+        "date": datetime.datetime(2014, 4, 9, 20, 39, 43),
         "tags" : {"measures"},
     }
     n.assert_dict_equal(observed, expected)
