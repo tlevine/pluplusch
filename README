@@ -5,6 +5,6 @@ This goes through all the datasets I know about. ::
 
 You can tune it a bit with the parameters. ::
 
-    pluplusch(catalogs = ['https://data.overheid.nl'], proxies = {},
+    pluplusch(catalogs = ['http://data.enseignementsup-recherche.gouv.fr'], proxies = {},
               cache_dir = '/lockers/tlevine_vol/dadawarehouse.thomaslevine.com/big/pluplusch')
 

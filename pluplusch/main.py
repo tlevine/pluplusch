@@ -7,6 +7,26 @@ import requests
 import pluplusch.index as i
  
 def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = False):
+    '''
+    pluplusch downloads data from open data websites. Here are
+    its inputs.
+
+    catalogs
+        List of catalogs do download, each item being either
+        a full URL string, including the scheme, or a tuple
+        of the full URL string and the software, in case pluplusch
+        doesn't know about the catalog
+    cache_dir
+        String directory to cache downloads to
+    proxies
+        A dictionary containing any or neither of "http_proxy"
+        and "https_proxy"
+    data
+        Should the full datasets be downloaded (True), or should
+        just the metadata be downloaded (False)?
+
+    It returns a generator of datasets.
+    '''
 
     @cache(cache_dir, mutable = False)
     def _get(url):
