@@ -21,7 +21,7 @@ catalogs = [
     (('http',), 'dadosabertos.senado.gov.br'),
     (('http',), 'dados.novohamburgo.rs.gov.br'),
     (('http',), 'data.gv.at'),
-    (('http',), 'data.linz.gv.at'),
+#   (('http',), 'data.linz.gv.at'),
     (('http',), 'fi.thedatahub.org'),
     (('http',), 'data.sa.gov.au'),
     (('http',), 'www.data.gc.ca'),
@@ -47,7 +47,7 @@ catalogs = [
     (('http',), 'www.nosdonnees.fr'),
     (('http',), 'offenedaten.de'),
     (('http',), 'data.opencolorado.org'),
-    (('http',), 'catalog.opendata.in.th'),
+#   (('http',), 'catalog.opendata.in.th'),
     (('http',), 'www.opendatahub.it'),
     (('http',), 'dati.trentino.it'),
     (('http',), 'data.openva.com'),
@@ -63,6 +63,7 @@ catalogs = [
 #   (('http',), 'thedatahub.org'),
     (('http',), 'dati.toscana.it'),
 ]
+catalogs = []
 
 def dataset_ids(get, catalog, page):
     url = urljoin(catalog, '/api/search/dataset?q=&start=%d' % page)
@@ -91,3 +92,6 @@ def download(get, catalog, _):
                     logger.error('Error at %s, %s' % (catalog, dataset_id))
                     logger.error(e)
                     break
+
+def standardize(_):
+    return {}

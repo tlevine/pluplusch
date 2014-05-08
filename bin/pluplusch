@@ -2,4 +2,4 @@
 import os, sys, json
 from pluplusch import pluplusch
 for dataset in pluplusch(cache_dir = os.path.expanduser('~/.pluplusch'), proxies = {}, data = False):
-    pass # sys.stdout.write(json.dumps(dataset, indent = 2, separators = (',', ': ')))
+    sys.stdout.write(json.dumps(dataset, indent = 2, separators = (',', ': ')))

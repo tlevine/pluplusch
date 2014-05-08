@@ -70,6 +70,7 @@ catalogs = [
     (('https','http',), 'data.acgov.org'),
     (('https','http',), 'data.medicare.gov'),
 ]
+catalogs = []
 
 def page(get, domain_with_scheme, page_number):
     full_url = urljoin(domain_with_scheme, '/api/views?page=%d' % page_number)
@@ -103,3 +104,6 @@ def download(get, domain, data):
                 logger.error('Error at %s, %s' % (domain, dataset['id']))
                 logger.error(e)
                 break
+
+def standardize(_):
+    return {}

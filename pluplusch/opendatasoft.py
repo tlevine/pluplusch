@@ -43,3 +43,6 @@ def download(get, catalog, data):
             logger.error('Error at %s, %s' % (catalog, dataset['datasetid']))
             logger.error(e)
             break
+
+def standardize(_):
+    return {}

@@ -11,7 +11,7 @@ def test_page():
 
 def test_standardize():
     original = {
-        'catalog': https://healthmeasures.aspe.hhs.gov',
+        'catalog': 'https://healthmeasures.aspe.hhs.gov',
 
         "id" : "t6ck-kg3u",
         "name" : "Measure Overviews",
@@ -20,10 +20,10 @@ def test_standardize():
         "displayType" : "table",
         "downloadCount" : 37,
         "indexUpdatedAt" : 1397175791,
-        "newBackend" : false,
+        "newBackend" : False,
         "numberOfComments" : 0,
         "oid" : 7728928,
-        "publicationAppendEnabled" : false,
+        "publicationAppendEnabled" : False,
         "publicationDate" : 1397075983,
         "publicationGroup" : 268458,
         "publicationStage" : "published",
@@ -35,15 +35,15 @@ def test_standardize():
         "viewLastModified" : 1397075983,
         "viewType" : "tabular",
         "grants" : [ {
-          "inherited" : true,
+          "inherited" : True,
           "type" : "viewer",
           "flags" : [ "public" ]
         } ],
         "metadata" : {
           "renderTypeConfig" : {
             "visible" : {
-              "page" : true,
-              "table" : true
+              "page" : True,
+              "table" : True
             },
             "active" : {
               "page" : {
@@ -67,12 +67,13 @@ def test_standardize():
         "tags" : [ "measures" ],
         "flags" : [ "default" ]
     }
-    observed = socrata.standardize(json.loads(dataset_from_api))
+    observed = socrata.standardize(original)
     expected = {
         'url': 'https://healthmeasures.aspe.hhs.gov/d/t6ck-kg3u',
         "name": "Measure Overviews",
-        "creator_name" : "Erin Miller"
+        "creator_name" : "Erin Miller",
         "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
         "date": None,
         "tags" : {"measures"},
     }
+    n.assert_dict_equal(observed, expected)
