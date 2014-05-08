@@ -1,6 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
-from logging import getLogger
-logger = getLogger(__name__)
+import logging
 
 from pickle_warehouse import Warehouse
 from picklecache import cache
@@ -8,6 +7,14 @@ import requests
 
 import pluplusch.index as i
  
+def getlogger():
+    logger = logging.getLogger(__name__)
+    fp_stream = logging.StreamHandler()
+    fp_stream.setLevel(logging.ERROR)
+    logger.addHandler(fp_stream)
+    return logger
+logger = getlogger()
+
 def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = False):
     '''
     pluplusch downloads data from open data websites. Here are
