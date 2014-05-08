@@ -32,7 +32,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
 
     @cache(cache_dir, mutable = False)
     def _get(url):
-        return requests.get(url, proxies = proxies)
+        return requests.get(url, proxies = proxies, verify = False)
     def get(url):
         try:
             response = _get(url)
