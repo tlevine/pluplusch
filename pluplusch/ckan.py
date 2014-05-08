@@ -34,7 +34,7 @@ catalogs = [
     (('http',), 'datakilder.no'),
     (('http',), 'datospublicos.org'),
     (('http',), 'data.denvergov.org'),
-    (('http',), 'ckan.emap.fgv.br'),
+#   (('http',), 'ckan.emap.fgv.br'),
     (('http',), 'open-data.europa.eu'),
     (('http',), 'www.healthdata.gov'),
     (('http',), 'www.hri.fi'),

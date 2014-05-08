@@ -39,6 +39,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
         except Exception as e:
             logger.error('Could not download ' + url)
             logger.error(e)
+            raise e
         if response.ok:
             return response
         else:
