@@ -89,7 +89,8 @@ def download(get, domain, data):
                 func = {
                     'href': None,
                     'table': csv,
-                }.get(dataset['displayType'])
+                    'tabular': csv,
+                }.get(dataset.get('displayType', dataset['viewType']))
                 if func == None:
                     func = lambda a, b: None
                 if data:
