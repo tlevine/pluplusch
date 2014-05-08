@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 import os, sys, json
 from pluplusch import pluplusch
-for dataset in pluplusch(cache_dir = os.path.expanduser('~/.pluplusch'), proxies = {}, data = False):
-    sys.stdout.write(json.dumps(dataset, indent = 2, separators = (',', ': ')))
+
+sys.stdout.write('\n')
+for i, dataset in enumerate(pluplusch(cache_dir = os.path.expanduser('~/.pluplusch'), proxies = {}, data = False)):
+    sys.stdout.write('\r%d metadatas retrieved' % i)
+#   sys.stdout.write(json.dumps(dataset, indent = 2, separators = (',', ': ')))

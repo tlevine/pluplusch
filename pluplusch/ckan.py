@@ -64,12 +64,15 @@ catalogs = [
 #   (('http',), 'thedatahub.org'),
     (('http',), 'dati.toscana.it'),
 ]
-catalogs = []
+# catalogs = []
 
 def dataset_ids(get, catalog, page):
     url = urljoin(catalog, '/api/search/dataset?q=&start=%d' % page)
     response = get(url)
-    data = json.loads(response.text)
+    try:
+        data = json.loads(response.text)
+    except ValueError:
+        raise ValueError('Error decoding %s' % url)
     return data['results']
 
 def dataset(get, catalog, datasetid):
