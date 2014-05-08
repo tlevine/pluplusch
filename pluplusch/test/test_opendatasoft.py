@@ -1,3 +1,4 @@
+import datetime
 from collections import namedtuple
 
 import nose.tools as n
@@ -134,10 +135,10 @@ def test_standardize():
     observed = ods.standardize(original)
     expected = {
         "url": "http://data.iledefrance.fr/explore/dataset/liste-des-espaces-de-retrait-so-colissimo-sans-horaires",
-        "title": "Liste des espaces de retrait So Colissimo (sans horaires)",
+        "name": "Liste des espaces de retrait So Colissimo (sans horaires)",
         "creator_name": "La poste",
         "creator_id": None,
-        "date": None,
+        "date":  datetime.datetime(2014, 3, 12, 16, 46, 9),
         "tags" : {"R\u00e9seau postal", "Courrier", "G\u00e9olocalisation"},
     }
     n.assert_dict_equal(observed, expected)

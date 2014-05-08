@@ -1,3 +1,4 @@
+import datetime
 import json
 from logging import getLogger
 logger = getLogger(__name__)
@@ -46,10 +47,10 @@ def download(get, catalog, data):
 
 def standardize(original):
     return {
-        'url': '%(catalog)s/d/%(id)s' % original,
-        "name": "Measure Overviews",
-        "creator_name" : "Erin Miller",
-        "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
-        "date": None,
-        "tags" : {"measures"},
+        'url': '%(catalog)s/explore/dataset/%(datasetid)s' % original,
+        "name": original['metas']['title'],
+        "creator_name" : original['metas']['publisher'],
+        "creator_id": None,
+        "date": datetime.datetime.strptime(original['metas']['modified'], '%Y-%m-%dT%H:%M:%S+00:00'),
+        "tags" : set(original['metas']['keyword']),
     }
