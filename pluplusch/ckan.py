@@ -21,7 +21,7 @@ catalogs = [
     (('http',), 'dados.gov.br'),
     (('http',), 'dadosabertos.senado.gov.br'),
     (('http',), 'dados.novohamburgo.rs.gov.br'),
-    (('http',), 'data.gv.at'),
+#   (('http',), 'data.gv.at'),
 #   (('http',), 'data.linz.gv.at'),
 #   (('http',), 'fi.thedatahub.org'),
     (('http',), 'data.sa.gov.au'),
