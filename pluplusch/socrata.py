@@ -69,7 +69,7 @@ catalogs = [
     (('http','https',), 'data.seattle.gov'),
     (('http','https',), 'data.montgomerycountymd.gov'),
     (('http','https',), 'data.acgov.org'),
-    (('http','https',), 'data.medicare.gov),
+    (('http','https',), 'data.medicare.gov'),
 ]
 
 def page(get, domain_with_scheme, page_number):
