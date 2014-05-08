@@ -39,7 +39,13 @@ def download(get, catalog, data):
         try:
             if data:
                 dataset['download'] = dataset_download(get, catalog, dataset['datasetid'])
-            yield dataset
+            nonstandard_dataset = dataset
+            if do_standardize:
+                standard_dataset = standardize(nonstandard_dataset)
+                standard_dataset['download'] = nonstandard_dataset.get('download')
+                yield standard_dataset
+            else:
+                yield nonstandard_dataset
         except Exception as e:
             logger.error('Error at %s, %s' % (catalog, dataset['datasetid']))
             logger.error(e)

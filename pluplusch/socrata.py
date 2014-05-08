@@ -82,7 +82,7 @@ def csv(get, identifier):
     url = 'https://data.cityofnewyork.us/api/views/%s/rows.csv?accessType=DOWNLOAD' % identifier
     return get(url)
 
-def download(get, domain, data):
+def download(get, domain, data, do_standardize):
     pages = (page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         for dataset in search_results:
@@ -100,7 +100,13 @@ def download(get, domain, data):
                     except Exception as e:
                         logger.error('Error downloading full data for %s, %s' % (domain, dataset['id']))
                         logger.error(e)
-                yield dataset
+                nonstandard_dataset = dataset
+                if do_standardize:
+                    standard_dataset = standardize(nonstandard_dataset)
+                    standard_dataset['download'] = nonstandard_dataset.get('download')
+                    yield standard_dataset
+                else:
+                    yield nonstandard_dataset
             except Exception as e:
                 logger.error('Error at %s, %s' % (domain, dataset['id']))
                 logger.error(e)

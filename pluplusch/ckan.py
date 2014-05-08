@@ -82,7 +82,7 @@ def dataset(get, catalog, datasetid):
     dataset['catalog'] = catalog
     return dataset
 
-def download(get, catalog, _):
+def download(get, catalog, _, do_standardize):
     dataset_ids_page = functools.partial(dataset_ids, get, catalog)
     for page in itertools.count(1):
         result = dataset_ids_page(page)
@@ -91,7 +91,13 @@ def download(get, catalog, _):
         else:
             for dataset_id in result:
                 try:
-                    yield dataset(get, catalog, dataset_id)
+                    nonstandard_dataset = dataset(get, catalog, dataset_id)
+                    if do_standardize:
+                        standard_dataset = standardize(nonstandard_dataset)
+                        standard_dataset['download'] = nonstandard_dataset.get('download')
+                        yield standard_dataset
+                    else:
+                        yield nonstandard_dataset
                 except Exception as e:
                     logger.error('Error at %s, %s' % (catalog, dataset_id))
                     logger.error(e)

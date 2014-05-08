@@ -15,7 +15,7 @@ def getlogger():
     return logger
 logger = getlogger()
 
-def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = False):
+def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = False, standardize = False):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -33,6 +33,9 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
     data
         Should the full datasets be downloaded (True), or should
         just the metadata be downloaded (False)?
+    standardize
+        Should the metadata be reduced and standardized across data
+        catalog softwares (True), or should they be kept as is (False)?
 
     It returns a generator of datasets.
     '''
@@ -58,7 +61,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
         # Use all catalogs.
         catalogs = list(i.all_catalogs())
 
-    generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog, data) for catalog in catalogs}
+    generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog, data, standardize) for catalog in catalogs}
     def f(generator):
         try:
             return next(generator)
