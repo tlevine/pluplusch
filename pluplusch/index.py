@@ -15,7 +15,7 @@ def catalogs(submodules = submodules(softwares)):
 def catalog_to_software(catalog, lookup = {}):
     # If the catalog is an iterable of (catalog, software), just return it.
     if len(catalog) == 2:
-        return catalog
+        return catalog[1]
 
     if lookup == {}:
         lookup.update(catalogs(submodules(softwares)))

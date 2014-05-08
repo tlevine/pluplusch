@@ -61,7 +61,11 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
         # Use all catalogs.
         catalogs = list(i.all_catalogs())
 
-    generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog, data, standardize) for catalog in catalogs}
+    catalog_names = ((catalog[0] if len(catalog) == 2 else catalog) for catalog in catalogs)
+    catalog_softwares = ((catalog[1] if len(catalog) == 2 else i.catalog_to_software(catalog)) for catalog in catalogs)
+    standardized_catalogs = zip(catalog_names, catalog_softwares)
+
+    generators = {catalog_name: getattr(submodules[catalog_software], 'download')(get, catalog_name, data, standardize) for (catalog_name, catalog_software) in standardized_catalogs}
     def f(generator):
         try:
             return next(generator)
