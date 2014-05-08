@@ -1,9 +1,11 @@
 import json
 import functools, itertools
 from urllib.parse import urljoin
+from logging import getLogger
+logger = getLogger(__name__)
 
 catalogs = [
-    (('http',), 'datahub.io'),
+#   (('http',), 'datahub.io'),
     (('http',), 'opendata.comune.bari.it'),
     (('http',), 'africaopendata.org'),
 #   (('http',), 'opendata.aragon.es'),
@@ -58,7 +60,7 @@ catalogs = [
     (('http',), 'www.daten.rlp.de'),
     (('http',), 'www.rotterdamopendata.nl'),
     (('http',), 'data.cityofsantacruz.com'),
-    (('http',), 'thedatahub.org'),
+#   (('http',), 'thedatahub.org'),
     (('http',), 'dati.toscana.it'),
 ]
 

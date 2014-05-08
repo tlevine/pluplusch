@@ -6,7 +6,6 @@ try:
 except ImportError:
     from urlparse import urljoin
 from logging import getLogger
-
 logger = getLogger(__name__)
 
 catalogs = [
@@ -30,12 +29,12 @@ catalogs = [
     (('https','http',), 'data.ny.gov'),
     (('https','http',), 'data.mo.gov'),
     (('https','http',), 'data.nfpa.org'),
-    (('https','http',), 'nmfs.socrata.com'),
+#   (('https','http',), 'nmfs.socrata.com'),
 #   (('https','http',), 'data.govloop.com'),
     (('https','http',), 'data.sunlightlabs.com'),
     (('https','http',), 'electionsdata.kingcounty.gov'),
     (('https','http',), 'data.undp.org'),
-    (('https','http',), 'deleon.socrata.com'),
+#   (('https','http',), 'deleon.socrata.com'),
     (('https','http',), 'data.energystar.gov'),
     (('https','http',), 'explore.data.gov'),
     (('https','http',), 'data.weatherfordtx.gov'),
