@@ -75,7 +75,7 @@ def dataset(get, catalog, datasetid):
     dataset['catalog'] = catalog
     return dataset
 
-def download(get, catalog):
+def download(get, catalog, _):
     dataset_ids_page = functools.partial(dataset_ids, get, catalog)
     for page in itertools.count(1):
         result = dataset_ids_page(page)

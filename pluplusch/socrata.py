@@ -81,7 +81,7 @@ def csv(get, identifier):
     url = 'https://data.cityofnewyork.us/api/views/%s/rows.csv?accessType=DOWNLOAD' % identifier
     return get(url)
 
-def download(get, domain):
+def download(get, domain, data):
     pages = (page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         for dataset in search_results:
@@ -91,8 +91,9 @@ def download(get, domain):
             }.get(dataset['displayType'])
             if func == None:
                 func = lambda a, b: None
-            try:
-                dataset['download'] = func(get, dataset['id']) 
-            except Exception as e:
-                logger.error(e)
+            if data:
+                try:
+                    dataset['download'] = func(get, dataset['id']) 
+                except Exception as e:
+                    logger.error(e)
             yield dataset

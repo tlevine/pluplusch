@@ -6,7 +6,7 @@ import requests
 
 import pluplusch.index as i
  
-def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
+def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = False):
 
     @cache(cache_dir, mutable = False)
     def _get(url):
@@ -24,7 +24,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}):
         # Use all catalogs.
         catalogs = list(i.all_catalogs())
 
-    generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog) for catalog in catalogs}
+    generators = {catalog: getattr(submodules[i.catalog_to_software(catalog)], 'download')(get, catalog, data) for catalog in catalogs}
     def f(generator):
         try:
             result = next(generator)
