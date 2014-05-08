@@ -6,7 +6,7 @@ catalogs = [
     (('http',), 'datahub.io'),
     (('http',), 'opendata.comune.bari.it'),
     (('http',), 'africaopendata.org'),
-    (('http',), 'opendata.aragon.es'),
+#   (('http',), 'opendata.aragon.es'),
     (('http',), 'daten.berlin.de'),
     (('http',), 'data.buenosaires.gob.ar'),
     (('http',), 'ie.ckan.net'),
