@@ -85,15 +85,21 @@ def download(get, domain, data):
     pages = (page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         for dataset in search_results:
-            func = {
-                'href': None,
-                'table': csv,
-            }.get(dataset['displayType'])
-            if func == None:
-                func = lambda a, b: None
-            if data:
-                try:
-                    dataset['download'] = func(get, dataset['id']) 
-                except Exception as e:
-                    logger.error(e)
-            yield dataset
+            try:
+                func = {
+                    'href': None,
+                    'table': csv,
+                }.get(dataset['displayType'])
+                if func == None:
+                    func = lambda a, b: None
+                if data:
+                    try:
+                        dataset['download'] = func(get, dataset['id']) 
+                    except Exception as e:
+                        logger.error('Error downloading full data for %s, %s' % (domain, dataset['id']))
+                        logger.error(e)
+                yield dataset
+            except Exception as e:
+                logger.error('Error at %s, %s' % (domain, dataset['id']))
+                logger.error(e)
+                break

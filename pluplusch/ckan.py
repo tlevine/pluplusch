@@ -83,4 +83,9 @@ def download(get, catalog, _):
             break
         else:
             for dataset_id in result:
-                yield dataset(get, catalog, dataset_id)
+                try:
+                    yield dataset(get, catalog, dataset_id)
+                except Exception as e:
+                    logger.error('Error at %s, %s' % (catalog, dataset_id))
+                    logger.error(e)
+                    break

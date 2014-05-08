@@ -33,6 +33,11 @@ def download(get, catalog, data):
     Download everything from an OpenDataSoft catalog.
     '''
     for dataset in datasets(get, catalog):
-        if data:
-            dataset['download'] = dataset_download(get, catalog, dataset['datasetid'])
-        yield dataset
+        try:
+            if data:
+                dataset['download'] = dataset_download(get, catalog, dataset['datasetid'])
+            yield dataset
+        except Exception as e:
+            logger.error('Error at %s, %s' % (catalog, dataset['datasetid']))
+            logger.error(e)
+            break
