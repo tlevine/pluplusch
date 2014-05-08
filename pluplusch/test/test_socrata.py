@@ -71,13 +71,8 @@ def test_standardize():
     expected = {
         'url': 'https://healthmeasures.aspe.hhs.gov/d/t6ck-kg3u',
         "name": "Measure Overviews",
-        "createdAt" : 1325616190,
-        "downloadCount" : 37,
-        "viewCount" : 643,
-        "publicationDate" : 1397075983,
-        "rowsUpdatedAt" : 1397075953,
-        "viewLastModified" : 1397075983,
-        "creator": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
+        "creator_name" : "Erin Miller"
+        "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
+        "date": None,
         "tags" : {"measures"},
-        "flags" : {"default"},
     }

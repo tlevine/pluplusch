@@ -101,15 +101,10 @@ def test_standardize():
     }
     observed = ckan.standardize(original)
     expected = {
-        "maintainer": "Ernesto Batista da Silva Filho",
-        "maintainer_email": "ernesto.silva-filho@planejamento.gov.br",
-        "metadata_created": "2013-12-03T14:38:48.896740",
-        "license": null,
-        "metadata_modified": "2013-12-03T14:38:48.896740",
-        "author": "Ernesto Batista da Silva Filho",
-        "author_email": "ernesto.silva-filho@planejamento.gov.br",
-        "tags": {"INDE"},
         "url": "http://dados.gov.br//dataset/adequacao-de-acesso-rodoviario",
-        "notes": "Adequa\u00e7\u00e3o de acesso rodovi\u00e1rio. Empreendimentos pertencentes a carteira do Anexo III do PPA 2012-2015. Programa 2075. Iniciativas 00AL e 00AM - escala 1:2.500.000. Sistema de refer\u00eancia: SIRGAS2000.",
         "title": "Adequa\u00e7\u00e3o de acesso rodovi\u00e1rio",
+        "creator_name": "Ernesto Batista da Silva Filho",
+        "creator_id": "ernesto.silva-filho@planejamento.gov.br",
+        "date": None,
+        "tags": {"INDE"},
     }
