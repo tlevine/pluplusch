@@ -105,7 +105,7 @@ def download(get, catalog, _, do_standardize):
 
 def standardize(original):
     return {
-        "url": '%(catalog)s/api/rest/dataset/%(url)s' % original,
+        "url": '%(catalog)s/dataset/%(name)s' % original,
         "title": original["title"],
         "creator_name": original.get("maintainer", original["author"]),
         "creator_id": original.get("maintainer_email", original["author_email"]), 
