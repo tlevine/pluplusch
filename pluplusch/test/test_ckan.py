@@ -19,6 +19,8 @@ def test_dataset():
 
 def test_standardize():
     original = {
+        "catalog": "http://dados.gov.br",
+
         "license_title": None,
         "maintainer": "Ernesto Batista da Silva Filho",
         "maintainer_email": "ernesto.silva-filho@planejamento.gov.br",
@@ -102,7 +104,7 @@ def test_standardize():
     }
     observed = ckan.standardize(original)
     expected = {
-        "url": "http://dados.gov.br//dataset/adequacao-de-acesso-rodoviario",
+        "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
         "title": "Adequa\u00e7\u00e3o de acesso rodovi\u00e1rio",
         "creator_name": "Ernesto Batista da Silva Filho",
         "creator_id": "ernesto.silva-filho@planejamento.gov.br",
