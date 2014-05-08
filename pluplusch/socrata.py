@@ -18,7 +18,7 @@ catalogs = [
     (('https','http',), 'opendata.go.ke'),
     (('https','http',), 'data.austintexas.gov'),
     (('https','http',), 'data.cityofnewyork.us'),
-    (('https','http',), 'info.samhsa.gov'),
+#   (('https','http',), 'info.samhsa.gov'),
     (('https','http',), 'data.taxpayer.net'),
     (('https','http',), 'data.cityofmadison.com'),
     (('https','http',), 'data.slcgov.com'),
