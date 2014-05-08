@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+import os, sys, json
+from pluplusch import pluplusch
+for dataset in pluplusch(cache_dir = os.expanduser('~/.pluplusch'), proxies = {}, data = False):
+    sys.stdout.write(json.dumps(dataset, indent = 2, separators = (',', ': ')))
