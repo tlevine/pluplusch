@@ -29,6 +29,8 @@ def catalog_to_software(catalog, lookup = {}):
             msg = "I don't know \"%s\"; try adding \"https://\" or \"http://\" in front of the URL." % catalog
         raise ValueError(msg)
 
-def all_catalogs():
-    for catalog, software in catalogs(submodules(softwares)):
-        yield catalog
+def all_catalogs(submodules = submodules(softwares)):
+    for software, module in submodules.items():
+        for catalog in getattr(module, 'catalogs'):
+            schemes, rest_of_url = catalog
+            yield schemes[0] + '://' + rest_of_url
