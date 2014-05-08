@@ -1,4 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor
+from logging import getLogger
+logger = getLogger(__name__)
 
 from pickle_warehouse import Warehouse
 from picklecache import cache
@@ -32,7 +34,11 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
     def _get(url):
         return requests.get(url, proxies = proxies)
     def get(url):
-        response = _get(url)
+        try:
+            response = _get(url)
+        except Exception as e:
+            logger.error('Could not download ' + url)
+            logger.error(e)
         if response.ok:
             return response
         else:
