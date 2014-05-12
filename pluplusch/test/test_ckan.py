@@ -110,5 +110,6 @@ def test_standardize():
         "creator_id": "ernesto.silva-filho@planejamento.gov.br",
         "date": datetime.datetime(2013, 12, 3, 14, 38, 48),
         "tags": {"INDE"},
+        "colnames": set(),
     }
     n.assert_dict_equal(observed, expected)

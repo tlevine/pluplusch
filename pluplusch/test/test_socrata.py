@@ -76,5 +76,6 @@ def test_standardize():
         "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
         "date": datetime.datetime(2014, 4, 9, 20, 39, 43),
         "tags" : {"measures"},
+        "colnames": set(),
     }
     n.assert_dict_equal(observed, expected)
