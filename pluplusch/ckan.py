@@ -1,8 +1,12 @@
+from io import StringIO
 import datetime
 import json
 import functools, itertools
 from urllib.parse import urljoin
 from logging import getLogger
+
+from pluplusch.csv_colnames import colnames
+
 logger = getLogger(__name__)
 
 catalogs = [
@@ -94,7 +98,9 @@ def download(get, catalog, _, do_standardize):
                     nonstandard_dataset = dataset(get, catalog, dataset_id)
                     if do_standardize:
                         standard_dataset = standardize(nonstandard_dataset)
-                        standard_dataset['download'] = nonstandard_dataset.get('download')
+                        if 'download' in nonstandard_dataset:
+                            standard_dataset['download'] = nonstandard_dataset['download']
+                            standard_dataset['colnames'] = colnames(StringIO(standard_dataset['download'].text))
                         yield standard_dataset
                     else:
                         yield nonstandard_dataset
