@@ -59,4 +59,5 @@ def standardize(original):
         "creator_id": None,
         "date": datetime.datetime.strptime(original['metas']['modified'], '%Y-%m-%dT%H:%M:%S+00:00'),
         "tags" : set(original['metas']['keyword']),
+        'colnames': set(field['name'] for field in original['fields']) if 'fields' in original else set(),
     }
