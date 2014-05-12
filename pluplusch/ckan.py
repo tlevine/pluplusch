@@ -117,4 +117,5 @@ def standardize(original):
         "creator_id": original.get("maintainer_email", original["author_email"]), 
         "date": datetime.datetime.strptime(original.get('metadata_modified', original['metadata_created']).split('.')[0], '%Y-%m-%dT%H:%M:%S'),
         "tags": set(original['tags']),
+        "colnames": set(),
     }
