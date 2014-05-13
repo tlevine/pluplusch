@@ -4,6 +4,7 @@ setup.py
 pluplusch/__init__.py
 pluplusch/azavea.py
 pluplusch/ckan.py
+pluplusch/csv_colnames.py
 pluplusch/index.py
 pluplusch/junar.py
 pluplusch/main.py
