@@ -12,3 +12,8 @@ You can tune it a bit with the parameters. ::
 Add these test cases:
 
     https://data.cityofnewyork.us, niuh-hrin
+
+If you want to save the data catalog metadata every so often, you might
+write a crontab that looks like this.
+
+    @weekly pluplusch
