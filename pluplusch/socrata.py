@@ -1,3 +1,4 @@
+from io import StringIO
 import datetime
 import json
 import functools
@@ -7,6 +8,9 @@ try:
 except ImportError:
     from urlparse import urljoin
 from logging import getLogger
+
+from pluplusch.csv_colnames import colnames
+
 logger = getLogger(__name__)
 
 catalogs = [
@@ -105,6 +109,8 @@ def download(get, domain, data, do_standardize):
                 if do_standardize:
                     standard_dataset = standardize(nonstandard_dataset)
                     standard_dataset['download'] = nonstandard_dataset.get('download')
+                    if nonstandard_dataset['download'] != None:
+                        standard_dataset['colnames'] = colnames(StringIO(standard_dataset['download'].text))
                     yield standard_dataset
                 else:
                     yield nonstandard_dataset
@@ -121,5 +127,5 @@ def standardize(original):
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],
         'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified'])),
         'tags' : set(original['tags']),
-        'colnames': set(column['fieldname'] for column in original.get('columns',[])),
+        'colnames': set(),
     }
