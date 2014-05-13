@@ -100,6 +100,7 @@ def download(get, domain, data, do_standardize):
                     except Exception as e:
                         logger.error('Error downloading full data for %s, %s' % (domain, dataset['id']))
                         logger.error(e)
+                dataset['catalog'] = domain
                 nonstandard_dataset = dataset
                 if do_standardize:
                     standard_dataset = standardize(nonstandard_dataset)
