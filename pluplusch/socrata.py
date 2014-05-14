@@ -88,38 +88,23 @@ def resource(get, domain_with_scheme, identifier):
     url = urljoin(domain_with_scheme, '/resource/%s.csv')
     return get(url)
 
-def download(get, domain, data, do_standardize):
+def download(get, domain, data):
+    'Emit datasets with non-standardized, Socrata metadata.'
     pages = (page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         for dataset in search_results:
-            try:
-                func = {
-                    'href': None,
-                    'table': csv,
-                    'tabular': csv,
-                }.get(dataset.get('displayType', dataset['viewType']))
-                if func == None:
-                    func = lambda a, b: None
-                if data:
-                    try:
-                        dataset['download'] = func(get, dataset['id']) 
-                    except Exception as e:
-                        logger.error('Error downloading full data for %s, %s' % (domain, dataset['id']))
-                        logger.error(e)
-                dataset['catalog'] = domain
-                nonstandard_dataset = dataset
-                if do_standardize:
-                    standard_dataset = standardize(nonstandard_dataset)
-                    standard_dataset['download'] = nonstandard_dataset.get('download')
-                    if nonstandard_dataset['download'] != None:
-                        standard_dataset['colnames'] = colnames(StringIO(standard_dataset['download'].text))
-                    yield standard_dataset
+            if data and get(dataset.get('displayType', dataset['viewType'])) in {'table','tabular'}:
+                try:
+                    dataset['download'] = resource(get, domain, dataset['id'])
+                except Exception as e:
+                    logger.error('Error downloading full data for %s, %s' % (domain, dataset['id']))
+                    logger.error(e)
                 else:
-                    yield nonstandard_dataset
-            except Exception as e:
-                logger.error('Error at %s, %s' % (domain, dataset['id']))
-                logger.error(e)
-                break
+                    if dataset['download'].status_code == 429:
+                        logger.info('Removing %s, %s download because 429' % (domain, dataset['id']))
+                        del(dataset['download'])
+            dataset['catalog'] = domain
+            yield dataset
 
 def standardize(original):
     return {
