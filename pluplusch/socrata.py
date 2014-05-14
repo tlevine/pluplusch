@@ -77,13 +77,15 @@ catalogs = [
 ]
 catalogs = []
 
-def page(get, domain_with_scheme, page_number):
-    full_url = urljoin(domain_with_scheme, '/api/views?page=%d' % page_number)
-    response = get(full_url)
+def search_page(get, domain_with_scheme, page_number):
+    'Download a search page.'
+    url = urljoin(domain_with_scheme, '/api/views?page=%d' % page_number)
+    response = get(url)
     return json.loads(response.text)
 
-def csv(get, identifier):
-    url = 'https://data.cityofnewyork.us/api/views/%s/rows.csv?accessType=DOWNLOAD' % identifier
+def resource(get, domain_with_scheme, identifier):
+    'Download a CSV file.'
+    url = urljoin(domain_with_scheme, '/resource/%s.csv')
     return get(url)
 
 def download(get, domain, data, do_standardize):
