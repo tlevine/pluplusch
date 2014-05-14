@@ -70,7 +70,7 @@ catalogs = [
 ]
 # catalogs = []
 
-def dataset_ids(get, catalog, page):
+def search(get, catalog, page):
     url = urljoin(catalog, '/api/search/dataset?q=&start=%d' % page)
     response = get(url)
     try:
@@ -79,14 +79,14 @@ def dataset_ids(get, catalog, page):
         raise ValueError('Error decoding %s' % url)
     return data['results']
 
-def dataset(get, catalog, datasetid):
+def rest(get, catalog, datasetid):
     url = urljoin(catalog, '/api/rest/dataset/%s' % datasetid)
     response = get(url)
     dataset = json.loads(response.text)
     dataset['catalog'] = catalog
     return dataset
 
-def download(get, catalog, _, do_standardize):
+def download(get, catalog, _):
     dataset_ids_page = functools.partial(dataset_ids, get, catalog)
     for page in itertools.count(1):
         result = dataset_ids_page(page)
@@ -95,22 +95,14 @@ def download(get, catalog, _, do_standardize):
         else:
             for dataset_id in result:
                 try:
-                    nonstandard_dataset = dataset(get, catalog, dataset_id)
-                    if do_standardize:
-                        standard_dataset = standardize(nonstandard_dataset)
-                        if 'download' in nonstandard_dataset:
-                            standard_dataset['download'] = nonstandard_dataset['download']
-                            standard_dataset['colnames'] = colnames(StringIO(standard_dataset['download'].text))
-                        yield standard_dataset
-                    else:
-                        yield nonstandard_dataset
+                    yield dataset(get, catalog, dataset_id)
                 except Exception as e:
                     logger.error('Error at %s, %s' % (catalog, dataset_id))
                     logger.error(e)
                     break
 
 def standardize(original):
-    return {
+    standardized_dataset = {
         "url": '%(catalog)s/dataset/%(name)s' % original,
         "title": original["title"],
         "creator_name": original.get("maintainer", original["author"]),
@@ -119,3 +111,6 @@ def standardize(original):
         "tags": set(original['tags']),
         "colnames": set(),
     }
+    if 'download' in original:
+        pass
+    return standardized_dataset

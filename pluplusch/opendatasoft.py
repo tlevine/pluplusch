@@ -18,7 +18,7 @@ catalogs = [
     (('http',), 'data.enseignementsup-recherche.gouv.fr'),
 ]
 
-def datasets(get, catalog):
+def search(get, catalog):
     # Search an OpenDataSoft portal, and add things.
     # I chose OpenDataSoft because they care a lot about metadata.
     response = get(catalog + '/api/datasets/1.0/search?rows=1000000')
@@ -27,7 +27,7 @@ def datasets(get, catalog):
         r['catalog'] = catalog
     return result
 
-def dataset_download(get, catalog, datasetid):
+def download_csv(get, catalog, datasetid):
     url = '%s/explore/dataset/%s/download/?format=csv' % (catalog, datasetid)
     return get(url)
 
@@ -39,13 +39,7 @@ def download(get, catalog, data, do_standardize):
         try:
             if data:
                 dataset['download'] = dataset_download(get, catalog, dataset['datasetid'])
-            nonstandard_dataset = dataset
-            if do_standardize:
-                standard_dataset = standardize(nonstandard_dataset)
-                standard_dataset['download'] = nonstandard_dataset.get('download')
-                yield standard_dataset
-            else:
-                yield nonstandard_dataset
+            yield dataset
         except Exception as e:
             logger.error('Error at %s, %s' % (catalog, dataset['datasetid']))
             logger.error(e)
