@@ -59,11 +59,17 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
         # Use all catalogs.
         catalogs = list(i.all_catalogs())
 
+    def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
+        for dataset in getattr(submodules[catalog_software], 'download')(get, catalog_name, data):
+            if standardize:
+                return getattr(submodules[catalog_software], 'standardize')(dataset)
+            else:
+                return dataset
+
     catalog_names = ((catalog[0] if len(catalog) == 2 else catalog) for catalog in catalogs)
     catalog_softwares = ((catalog[1] if len(catalog) == 2 else i.catalog_to_software(catalog)) for catalog in catalogs)
     standardized_catalogs = zip(catalog_names, catalog_softwares)
-
-    generators = {catalog_name: getattr(submodules[catalog_software], 'download')(get, catalog_name, data) for (catalog_name, catalog_software) in standardized_catalogs}
+    generators = {catalog_name: dataset_generator(*args) for args in standardized_catalogs}
 
     while generators != {}:
         with ThreadPoolExecutor(len(generators)) as e:
@@ -76,13 +82,6 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
                     yield dataset
             for catalog in remove:
                 del(generators[catalog])
-
-def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
-    for dataset in getattr(submodules[catalog_software], 'download')(get, catalog_name, data):
-        if standardize:
-            return getattr(submodules[catalog_software], 'standardize')(dataset)
-        else:
-            return dataset
 
 def generate(generator):
     try:
