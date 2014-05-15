@@ -77,15 +77,15 @@ catalogs = [
 ]
 catalogs = []
 
-def search_page(get, domain_with_scheme, page_number):
+def search_page(get, catalog, page_number):
     'Download a search page.'
-    url = urljoin(domain_with_scheme, '/api/views?page=%d' % page_number)
+    url = urljoin(catalog, '/api/views?page=%d' % page_number)
     response = get(url)
     return json.loads(response.text)
 
-def resource(get, domain_with_scheme, identifier):
+def resource(get, catalog, identifier):
     'Download a CSV file.'
-    url = urljoin(domain_with_scheme, '/resource/%s.csv')
+    url = urljoin(catalog, '/resource/%s.csv')
     return get(url)
 
 def download(get, domain, data):
@@ -103,7 +103,6 @@ def download(get, domain, data):
                     if dataset['download'].status_code == 429:
                         logger.info('Removing %s, %s download because 429' % (domain, dataset['id']))
                         del(dataset['download'])
-            dataset['catalog'] = domain
             yield dataset
 
 def standardize(original):

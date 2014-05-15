@@ -55,8 +55,6 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
         else:
             raise ValueError('%d response at %s' % (response.status_code, url))
 
-    submodules = i.submodules()
-
     if catalogs == None:
         # Use all catalogs.
         catalogs = list(i.all_catalogs())
@@ -65,20 +63,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
     catalog_softwares = ((catalog[1] if len(catalog) == 2 else i.catalog_to_software(catalog)) for catalog in catalogs)
     standardized_catalogs = zip(catalog_names, catalog_softwares)
 
-    generators = {catalog_name: (catalog_software, getattr(submodules[catalog_software], 'download')(get, catalog_name, data) for (catalog_name, catalog_software)) in standardized_catalogs}
-    def f(generator):
-        catalog_software, real_generator = generator
-        try:
-            result = next(real_generator)
-        except StopIteration:
-            pass
-        except Exception as e:
-            logger.error(e)
-        else:
-            if standardize:
-                return getattr(submodules[catalog_software], 'standardize')(result)
-            else:
-                return result
+    generators = {catalog_name: getattr(submodules[catalog_software], 'download')(get, catalog_name, data) for (catalog_name, catalog_software) in standardized_catalogs}
 
     while generators != {}:
         with ThreadPoolExecutor(len(generators)) as e:
@@ -91,3 +76,18 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
                     yield dataset
             for catalog in remove:
                 del(generators[catalog])
+
+def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
+    for dataset in getattr(submodules[catalog_software], 'download')(get, catalog_name, data):
+        if standardize:
+            return getattr(submodules[catalog_software], 'standardize')(dataset)
+        else:
+            return dataset
+
+def generate(generator):
+    try:
+        return next(generator)
+    except StopIteration:
+        pass
+    except Exception as e:
+        logger.error(e)

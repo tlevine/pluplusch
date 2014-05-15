@@ -73,17 +73,13 @@ catalogs = [
 def search(get, catalog, page):
     url = urljoin(catalog, '/api/search/dataset?q=&start=%d' % page)
     response = get(url)
-    try:
-        data = json.loads(response.text)
-    except ValueError:
-        raise ValueError('Error decoding %s' % url)
+    data = json.loads(response.text)
     return data['results']
 
 def rest(get, catalog, datasetid):
     url = urljoin(catalog, '/api/rest/dataset/%s' % datasetid)
     response = get(url)
     dataset = json.loads(response.text)
-    dataset['catalog'] = catalog
     return dataset
 
 def download(get, catalog, _):
