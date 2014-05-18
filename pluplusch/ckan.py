@@ -82,16 +82,16 @@ def rest(get, catalog, datasetid):
     dataset = json.loads(response.text)
     return dataset
 
-def download(get, catalog, _):
-    dataset_ids_page = functools.partial(dataset_ids, get, catalog)
+def dump(get, catalog):
+    search_page = functools.partial(search, get, catalog)
     for page in itertools.count(1):
-        result = dataset_ids_page(page)
+        result = search_page(page)
         if result == []:
             break
         else:
             for dataset_id in result:
                 try:
-                    yield dataset(get, catalog, dataset_id)
+                    yield rest(get, catalog, dataset_id)
                 except Exception as e:
                     logger.error('Error at %s, %s' % (catalog, dataset_id))
                     logger.error(e)
@@ -100,13 +100,12 @@ def download(get, catalog, _):
 def standardize(original):
     standardized_dataset = {
         "url": '%(catalog)s/dataset/%(name)s' % original,
+        "download_url": None,
         "title": original["title"],
         "creator_name": original.get("maintainer", original["author"]),
         "creator_id": original.get("maintainer_email", original["author_email"]), 
         "date": datetime.datetime.strptime(original.get('metadata_modified', original['metadata_created']).split('.')[0], '%Y-%m-%dT%H:%M:%S'),
         "tags": set(original['tags']),
-        "colnames": set(),
+    #   "colnames": set(),
     }
-    if 'download' in original:
-        pass
     return standardized_dataset

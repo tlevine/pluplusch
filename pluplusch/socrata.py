@@ -75,39 +75,24 @@ catalogs = [
     (('https','http',), 'data.acgov.org'),
     (('https','http',), 'data.medicare.gov'),
 ]
-catalogs = []
 
-def search_page(get, catalog, page_number):
+def views_page(get, catalog, page_number):
     'Download a search page.'
     url = urljoin(catalog, '/api/views?page=%d' % page_number)
     response = get(url)
     return json.loads(response.text)
 
-def resource(get, catalog, identifier):
-    'Download a CSV file.'
-    url = urljoin(catalog, '/resource/%s.csv')
-    return get(url)
-
-def download(get, domain, data):
+def metadata(get, domain):
     'Emit datasets with non-standardized, Socrata metadata.'
-    pages = (page(get, domain, page_number) for page_number in itertools.count(1))
+    pages = (views_page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
-        for dataset in search_results:
-            if data and get(dataset.get('displayType', dataset['viewType'])) in {'table','tabular'}:
-                try:
-                    dataset['download'] = resource(get, domain, dataset['id'])
-                except Exception as e:
-                    logger.error('Error downloading full data for %s, %s' % (domain, dataset['id']))
-                    logger.error(e)
-                else:
-                    if dataset['download'].status_code == 429:
-                        logger.info('Removing %s, %s download because 429' % (domain, dataset['id']))
-                        del(dataset['download'])
-            yield dataset
+        yield from search_results
 
 def standardize(original):
+    is_tabular = dataset.get('displayType') == 'table' or dataset.get('viewType') == 'tabular'
     return {
         'url': '%(catalog)s/d/%(id)s' % original,
+        'download_url': '%(catalog)s/resource/%s.csv' % original if is_tabular else None,
         'title': original['name'],
         'creator_name' : original['owner']['displayName'],
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],

@@ -19,33 +19,20 @@ catalogs = [
 ]
 
 def search(get, catalog):
+    '''
+    Download everything from an OpenDataSoft catalog.
+    '''
+
     # Search an OpenDataSoft portal, and add things.
     # I chose OpenDataSoft because they care a lot about metadata.
     response = get(catalog + '/api/datasets/1.0/search?rows=1000000')
     result = json.loads(response.text)['datasets']
     return result
 
-def download_csv(get, catalog, datasetid):
-    url = '%s/explore/dataset/%s/download/?format=csv' % (catalog, datasetid)
-    return get(url)
-
-def download(get, catalog, data, do_standardize):
-    '''
-    Download everything from an OpenDataSoft catalog.
-    '''
-    for dataset in datasets(get, catalog):
-        try:
-            if data:
-                dataset['download'] = dataset_download(get, catalog, dataset['datasetid'])
-            yield dataset
-        except Exception as e:
-            logger.error('Error at %s, %s' % (catalog, dataset['datasetid']))
-            logger.error(e)
-            break
-
 def standardize(original):
     return {
         'url': '%(catalog)s/explore/dataset/%(datasetid)s' % original,
+        'download_url': '%(catalog)s/explore/dataset/%(datasetid)s/download/?format=csv' % original,
         "title": original['metas']['title'],
         "creator_name" : original['metas']['publisher'],
         "creator_id": None,
