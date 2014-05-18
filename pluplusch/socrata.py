@@ -80,15 +80,16 @@ def views_page(get, catalog, page_number):
     'Download a search page.'
     url = urljoin(catalog, '/api/views?page=%d' % page_number)
     response = get(url)
-    return json.loads(response.text)
+    views = json.loads(response.text)
+    for view in views:
+        view['catalog'] = catalog
+    return views
 
 def metadata(get, domain):
     'Emit datasets with non-standardized, Socrata metadata.'
     pages = (views_page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
-        for search_result in search_results:
-            search_result['catalog'] = catalog
-            yield search_result
+        yield from search_results
 
 def standardize(original):
     is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'
