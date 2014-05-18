@@ -31,6 +31,13 @@ def metadata(get, catalog):
         dataset['catalog'] = catalog
     return result
 
+def standardize(get, original):
+    '''
+    Ignore the get function; this is so that different modules'
+    standardize functions have the same signature.
+    '''
+    return _standardize(original)
+
 def _standardize(original):
     return {
         'url': '%(catalog)s/explore/dataset/%(datasetid)s' % original,

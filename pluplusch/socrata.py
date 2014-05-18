@@ -91,6 +91,13 @@ def metadata(get, domain):
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         yield from search_results
 
+def standardize(get, original):
+    '''
+    Ignore the get function; this is so that different modules'
+    standardize functions have the same signature.
+    '''
+    return _standardize(original)
+
 def _standardize(original):
     is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'
     return {

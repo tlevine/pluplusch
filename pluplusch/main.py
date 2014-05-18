@@ -62,7 +62,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
     def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
         for dataset in getattr(submodules[catalog_software], 'download')(get, catalog_name, data):
             if standardize:
-                return getattr(submodules[catalog_software], 'standardize')(dataset)
+                return getattr(submodules[catalog_software], 'standardize')(get, dataset)
             else:
                 return dataset
 
