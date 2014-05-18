@@ -33,5 +33,16 @@ def test_standardize_zt9s_n5aj():
         original = json.load(fp)
     observed = socrata.standardize(original)
     expected = {
+        'url': 'https://data.cityofnewyork.us/d/zt9s-n5aj',
+        'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/5fuc-pqz2',
+        'creator_name': 'NYC OpenData',
+        'date': datetime.datetime(2014, 1, 24, 18, 20, 58),
+        'download_url': 'https://data.cityofnewyork.us/resource/zt9s-n5aj.csv',
+        'tags': {'lifelong learning'},
+        'title': 'SAT (College Board) 2010 School Level Results',
+        'colnames': {
+            'dbn','field_name','number_of_test_takers',
+            'critical_reading_mean', 'mathematics_mean', 'writing_mean',
+        }
     }
     n.assert_dict_equal(observed, expected)
