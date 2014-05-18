@@ -80,6 +80,7 @@ def rest(get, catalog, datasetid):
     url = urljoin(catalog, '/api/rest/dataset/%s' % datasetid)
     response = get(url)
     dataset = json.loads(response.text)
+    dataset['catalog'] = catalog
     return dataset
 
 def metadata(get, catalog):
@@ -91,14 +92,11 @@ def metadata(get, catalog):
         else:
             for dataset_id in result:
                 try:
-                    api_response = rest(get, catalog, dataset_id)
+                    yield rest(get, catalog, dataset_id)
                 except Exception as e:
                     logger.error('Error at %s, %s' % (catalog, dataset_id))
                     logger.error(e)
                     break
-                else:
-                    api_response['catalog'] = catalog
-                    yield api_response
 
 def standardize(original):
     standardized_dataset = {
