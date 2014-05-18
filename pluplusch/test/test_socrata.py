@@ -5,9 +5,9 @@ import nose.tools as n
 
 import pluplusch.socrata as socrata
 
-def test_page():
+def test_views_page():
     Response = namedtuple('Response', ['text'])
-    observed = socrata.page(lambda _: Response('[{}]'), 'https://foo.bar', 1)
+    observed = socrata.views_page(lambda _: Response('[{}]'), 'https://foo.bar', 1)
     n.assert_list_equal(observed, [{}])
 
 def test_standardize():

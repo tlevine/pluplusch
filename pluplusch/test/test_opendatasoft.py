@@ -7,12 +7,12 @@ import pluplusch.opendatasoft as ods
 
 Response = namedtuple('Response', ['text','ok'])
 
-def test_datasets():
+def test_metadata():
     def get(url):
         return Response(text = '{"datasets":[{"foo":8}]}', ok = True)
     catalog = 'stnoheustahoe'
 
-    observed = ods.datasets(get, catalog)
+    observed = ods.metadata(get, catalog)
     expected = [{'foo':8,'catalog':catalog}]
     n.assert_list_equal(observed, expected)
 

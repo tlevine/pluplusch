@@ -18,7 +18,7 @@ catalogs = [
     (('http',), 'data.enseignementsup-recherche.gouv.fr'),
 ]
 
-def search(get, catalog):
+def metadata(get, catalog):
     '''
     Download everything from an OpenDataSoft catalog.
     '''
