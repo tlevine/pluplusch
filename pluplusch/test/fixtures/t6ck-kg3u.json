@@ -8,10 +8,10 @@
   "displayType" : "table",
   "downloadCount" : 37,
   "indexUpdatedAt" : 1397175791,
-  "newBackend" : False,
+  "newBackend" : false,
   "numberOfComments" : 0,
   "oid" : 7728928,
-  "publicationAppendEnabled" : False,
+  "publicationAppendEnabled" : false,
   "publicationDate" : 1397075983,
   "publicationGroup" : 268458,
   "publicationStage" : "published",
@@ -23,15 +23,15 @@
   "viewLastModified" : 1397075983,
   "viewType" : "tabular",
   "grants" : [ {
-    "inherited" : True,
+    "inherited" : true,
     "type" : "viewer",
     "flags" : [ "public" ]
   } ],
   "metadata" : {
     "renderTypeConfig" : {
       "visible" : {
-        "page" : True,
-        "table" : True
+        "page" : true,
+        "table" : true
       },
       "active" : {
         "page" : {
