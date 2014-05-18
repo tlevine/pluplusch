@@ -2,6 +2,7 @@ import datetime
 from collections import namedtuple
 
 import nose.tools as n
+n.assert_dict_equal.__self__.maxDiff = None
 
 import pluplusch.ckan as ckan
 
