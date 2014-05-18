@@ -8,6 +8,9 @@ import pluplusch.ckan as ckan
 
 Response = namedtuple('Response', ['text'])
 
+def should_not_run(_):
+    raise AssertionError('This function should not be called.')
+
 def test_search():
     fake_get = lambda _: Response('{"results":[{"a":3}]}')
     observed = ckan.search(fake_get, 'https://foo-catalog.sh', 2)
@@ -103,7 +106,7 @@ def test_standardize():
         "ratings_count": 0,
         "revision_id": "a355ad23-6fe9-4217-a893-522417e73cd9"
     }
-    observed = ckan.standardize(original)
+    observed = ckan.standardize(should_not_run, original)
     expected = {
         "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
         "download_url": None,
@@ -117,7 +120,8 @@ def test_standardize():
     n.assert_dict_equal(observed, expected)
 
     original['resources'][-1]['format'] = 'csv'
-    observed = ckan.standardize(original)
+    fake_get = lambda url: Response('peanut.butter,jelly\r\n')
+    observed = ckan.standardize(fake_get, original)
     expected = {
         "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
         "download_url": "http://www.geoservicos.inde.gov.br/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=MPOG:Transporte_Rodoviario_Acesso&width=1024&height=768&bbox=-74,-34,-29,6",
@@ -126,6 +130,6 @@ def test_standardize():
         "creator_id": "ernesto.silva-filho@planejamento.gov.br",
         "date": datetime.datetime(2013, 12, 3, 14, 38, 48),
         "tags": {"INDE"},
-        "colnames": set(),
+        "colnames": {'peanut.butter','jelly'},
     }
     n.assert_dict_equal(observed, expected)
