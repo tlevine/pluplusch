@@ -1,6 +1,6 @@
 from importlib import import_module
 
-softwares = ['azavea','ckan','junar','opendatasoft','socrata']
+softwares = ['ckan','opendatasoft','socrata']
 
 def submodules(softwares = softwares):
     return {software: import_module('pluplusch.%s' % software) for software in softwares}
