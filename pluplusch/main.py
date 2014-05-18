@@ -57,7 +57,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, standardi
         catalogs = list(i.all_catalogs())
 
     def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
-        for dataset in getattr(submodules[catalog_software], 'download')(get, catalog_name):
+        for dataset in getattr(submodules[catalog_software], 'metadata')(get, catalog_name):
             if standardize:
                 return getattr(submodules[catalog_software], 'standardize')(get, dataset)
             else:
@@ -66,7 +66,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, standardi
     catalog_names = ((catalog[0] if len(catalog) == 2 else catalog) for catalog in catalogs)
     catalog_softwares = ((catalog[1] if len(catalog) == 2 else i.catalog_to_software(catalog)) for catalog in catalogs)
     standardized_catalogs = zip(catalog_names, catalog_softwares)
-    generators = {catalog_name: dataset_generator(*args) for args in standardized_catalogs}
+    generators = {args[0]: dataset_generator(*args) for args in standardized_catalogs}
 
     while generators != {}:
         with ThreadPoolExecutor(len(generators)) as e:
