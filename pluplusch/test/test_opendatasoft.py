@@ -135,6 +135,7 @@ def test_standardize():
     observed = ods.standardize(original)
     expected = {
         "url": "http://data.iledefrance.fr/explore/dataset/liste-des-espaces-de-retrait-so-colissimo-sans-horaires",
+        'download_url': 'http://data.iledefrance.fr/explore/dataset/liste-des-espaces-de-retrait-so-colissimo-sans-horaires/download/?format=csv' % original,
         "title": "Liste des espaces de retrait So Colissimo (sans horaires)",
         "creator_name": "La poste",
         "creator_id": None,
