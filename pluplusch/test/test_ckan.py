@@ -105,6 +105,21 @@ def test_standardize():
     observed = ckan.standardize(original)
     expected = {
         "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
+        "download_url": None,
+        "title": "Adequa\u00e7\u00e3o de acesso rodovi\u00e1rio",
+        "creator_name": "Ernesto Batista da Silva Filho",
+        "creator_id": "ernesto.silva-filho@planejamento.gov.br",
+        "date": datetime.datetime(2013, 12, 3, 14, 38, 48),
+        "tags": {"INDE"},
+        "colnames": set(),
+    }
+    n.assert_dict_equal(observed, expected)
+
+    original['resources'][-1]['format'] = 'csv'
+    observed = ckan.standardize(original)
+    expected = {
+        "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
+        "download_url": "http://www.geoservicos.inde.gov.br/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=MPOG:Transporte_Rodoviario_Acesso&width=1024&height=768&bbox=-74,-34,-29,6",
         "title": "Adequa\u00e7\u00e3o de acesso rodovi\u00e1rio",
         "creator_name": "Ernesto Batista da Silva Filho",
         "creator_id": "ernesto.silva-filho@planejamento.gov.br",
