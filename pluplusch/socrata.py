@@ -89,10 +89,10 @@ def metadata(get, domain):
         yield from search_results
 
 def standardize(original):
-    is_tabular = dataset.get('displayType') == 'table' or dataset.get('viewType') == 'tabular'
+    is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'
     return {
         'url': '%(catalog)s/d/%(id)s' % original,
-        'download_url': '%(catalog)s/resource/%s.csv' % original if is_tabular else None,
+        'download_url': '%(catalog)s/resource/%(id)s.csv' % original if is_tabular else None,
         'title': original['name'],
         'creator_name' : original['owner']['displayName'],
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],
