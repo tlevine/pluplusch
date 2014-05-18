@@ -15,7 +15,7 @@ def getlogger():
     return logger
 logger = getlogger()
 
-def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = False, standardize = False):
+def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, standardize = False):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -30,9 +30,6 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
     proxies
         A dictionary containing any or neither of "http_proxy"
         and "https_proxy"
-    data
-        Should the full datasets be downloaded (True), or should
-        just the metadata be downloaded (False)?
     standardize
         Should the metadata be reduced and standardized across data
         catalog softwares (True), or should they be kept as is (False)?
@@ -60,7 +57,7 @@ def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, data = Fa
         catalogs = list(i.all_catalogs())
 
     def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
-        for dataset in getattr(submodules[catalog_software], 'download')(get, catalog_name, data):
+        for dataset in getattr(submodules[catalog_software], 'download')(get, catalog_name):
             if standardize:
                 return getattr(submodules[catalog_software], 'standardize')(get, dataset)
             else:
