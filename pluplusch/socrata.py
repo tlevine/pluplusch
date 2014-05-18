@@ -91,7 +91,7 @@ def metadata(get, domain):
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         yield from search_results
 
-def standardize(original):
+def _standardize(original):
     is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'
     return {
         'url': '%(catalog)s/d/%(id)s' % original,

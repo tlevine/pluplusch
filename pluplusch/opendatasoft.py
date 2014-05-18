@@ -31,7 +31,7 @@ def metadata(get, catalog):
         dataset['catalog'] = catalog
     return result
 
-def standardize(original):
+def _standardize(original):
     return {
         'url': '%(catalog)s/explore/dataset/%(datasetid)s' % original,
         'download_url': '%(catalog)s/explore/dataset/%(datasetid)s/download/?format=csv' % original,
