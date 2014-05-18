@@ -27,6 +27,8 @@ def metadata(get, catalog):
     # I chose OpenDataSoft because they care a lot about metadata.
     response = get(catalog + '/api/datasets/1.0/search?rows=1000000')
     result = json.loads(response.text)['datasets']
+    for dataset in result:
+        dataset['catalog'] = catalog
     return result
 
 def standardize(original):

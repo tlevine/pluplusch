@@ -86,7 +86,9 @@ def metadata(get, domain):
     'Emit datasets with non-standardized, Socrata metadata.'
     pages = (views_page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
-        yield from search_results
+        for search_result in search_results:
+            search_result['catalog'] = catalog
+            yield search_result
 
 def standardize(original):
     is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'

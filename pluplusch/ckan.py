@@ -82,7 +82,7 @@ def rest(get, catalog, datasetid):
     dataset = json.loads(response.text)
     return dataset
 
-def dump(get, catalog):
+def metadata(get, catalog):
     search_page = functools.partial(search, get, catalog)
     for page in itertools.count(1):
         result = search_page(page)
@@ -91,11 +91,14 @@ def dump(get, catalog):
         else:
             for dataset_id in result:
                 try:
-                    yield rest(get, catalog, dataset_id)
+                    api_response = rest(get, catalog, dataset_id)
                 except Exception as e:
                     logger.error('Error at %s, %s' % (catalog, dataset_id))
                     logger.error(e)
                     break
+                else:
+                    api_response['catalog'] = catalog
+                    yield api_response
 
 def standardize(original):
     standardized_dataset = {
