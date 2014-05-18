@@ -1,3 +1,4 @@
+import os
 from concurrent.futures import ThreadPoolExecutor
 import logging
 
@@ -15,7 +16,9 @@ def getlogger():
     return logger
 logger = getlogger()
 
-def pluplusch(catalogs = None, cache_dir = '.pluplusch', proxies = {}, standardize = False):
+def pluplusch(catalogs = None,
+        cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch'),
+        proxies = {}, standardize = False):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
