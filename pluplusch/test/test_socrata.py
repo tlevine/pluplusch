@@ -1,3 +1,4 @@
+import os, json
 import datetime
 from collections import namedtuple
 
@@ -11,7 +12,7 @@ def test_views_page():
     observed = socrata.views_page(lambda _: Response('[{"abc":"def"}]'), catalog, 1)
     n.assert_list_equal(observed, [{'abc':'def','catalog':'https://foo.bar',}])
 
-def test_standardize():
+def test_standardize_t6ck_kg3u():
     original = {
         'catalog': 'https://healthmeasures.aspe.hhs.gov',
 
@@ -79,5 +80,13 @@ def test_standardize():
         "date": datetime.datetime(2014, 4, 9, 20, 39, 43),
         "tags" : {"measures"},
         "colnames": set(),
+    }
+    n.assert_dict_equal(observed, expected)
+
+def test_standardize_zt9s_n5aj():
+    with open(os.path.join('pluplusch', 'test', 'fixtures', 'zt9s-n5aj.json'), 'r') as fp:
+        original = json.load(fp)
+    observed = socrata.standardize(original)
+    expected = {
     }
     n.assert_dict_equal(observed, expected)
