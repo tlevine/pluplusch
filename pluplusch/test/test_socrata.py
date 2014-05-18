@@ -41,7 +41,7 @@ def test_standardize_zt9s_n5aj():
         'tags': {'lifelong learning'},
         'title': 'SAT (College Board) 2010 School Level Results',
         'colnames': {
-            'dbn','field_name','number_of_test_takers',
+            'dbn','school_name','number_of_test_takers',
             'critical_reading_mean', 'mathematics_mean', 'writing_mean',
         }
     }

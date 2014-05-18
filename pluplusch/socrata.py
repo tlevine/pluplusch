@@ -101,5 +101,5 @@ def standardize(original):
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],
         'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified'])),
         'tags' : set(original['tags']),
-        'colnames': set(),
+        'colnames': set(column['fieldName'] for column in original.get('columns',[])),
     }
