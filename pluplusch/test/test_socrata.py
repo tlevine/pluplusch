@@ -6,9 +6,10 @@ import nose.tools as n
 import pluplusch.socrata as socrata
 
 def test_views_page():
+    catalog = 'https://foo.bar'
     Response = namedtuple('Response', ['text'])
-    observed = socrata.views_page(lambda _: Response('[{}]'), 'https://foo.bar', 1)
-    n.assert_list_equal(observed, [{}])
+    observed = socrata.views_page(lambda _: Response('[{"abc":"def"}]'), catalog, 1)
+    n.assert_list_equal(observed, [{'abc':'def','catalog':'https://foo.bar',}])
 
 def test_standardize():
     original = {
