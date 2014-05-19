@@ -8,7 +8,7 @@ from pluplusch import pluplusch
 def args():
     parser = argparse.ArgumentParser()
 
-    cache_dir = os.path.expanduser('~/%s/.pluplusch' % datetime.date.today().isoformat())
+    cache_dir = os.path.expanduser('~/.pluplusch/' + datetime.date.today().isoformat())
     parser.add_argument('--cache-dir', '-d', metavar = 'DIR', default = cache_dir)
 
     parser.add_argument('--colnames', '-c', action = 'store_true', default = True)

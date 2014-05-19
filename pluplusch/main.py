@@ -64,7 +64,11 @@ def pluplusch(catalogs = None,
     def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
         for dataset in submodules[catalog_software].metadata(get, catalog_name):
             if standardize:
-                yield submodules[catalog_software].standardize(get, colnames, dataset)
+                try:
+                    yield submodules[catalog_software].standardize(get, colnames, dataset)
+                except Exception as e:
+                    logger.error('Unable to standardize this dataset:\n%s\n' % str(dataset))
+                    logger.error(e)
             else:
                 yield dataset
 
