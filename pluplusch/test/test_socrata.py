@@ -24,7 +24,7 @@ def test_standardize_t6ck_kg3u():
         "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
         "date": datetime.datetime(2014, 4, 9, 20, 39, 43),
         "tags" : {"measures"},
-        "colnames": set(),
+        "colnames": [],
     }
     n.assert_dict_equal(observed, expected)
 
@@ -40,9 +40,9 @@ def test_standardize_zt9s_n5aj():
         'download_url': 'https://data.cityofnewyork.us/resource/zt9s-n5aj.csv',
         'tags': {'lifelong learning'},
         'title': 'SAT (College Board) 2010 School Level Results',
-        'colnames': {
+        'colnames': [
             'dbn','school_name','number_of_test_takers',
             'critical_reading_mean', 'mathematics_mean', 'writing_mean',
-        }
+        ],
     }
     n.assert_dict_equal(observed, expected)

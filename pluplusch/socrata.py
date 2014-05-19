@@ -9,8 +9,6 @@ except ImportError:
     from urlparse import urljoin
 from logging import getLogger
 
-from pluplusch.csv_colnames import colnames
-
 logger = getLogger(__name__)
 
 catalogs = [
@@ -91,14 +89,14 @@ def metadata(get, domain):
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         yield from search_results
 
-def standardize(get, colnames, original):
+def standardize(get, check_colnames:bool, original):
     '''
     Ignore the get function; this is so that different modules'
     standardize functions have the same signature.
     '''
-    return _standardize(colnames, original)
+    return _standardize(check_colnames, original)
 
-def _standardize(colnames, original):
+def _standardize(check_colnames, original):
     is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'
     data = {
         'url': '%(catalog)s/d/%(id)s' % original,
@@ -109,6 +107,6 @@ def _standardize(colnames, original):
         'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified'])),
         'tags' : set(original['tags']),
     }
-    if colnames:
-        data['colnames'] = set(column['fieldName'] for column in original.get('columns',[])),
+    if check_colnames:
+        data['colnames'] = [column['fieldName'] for column in original.get('columns',[])]
     return data
