@@ -31,15 +31,15 @@ def metadata(get, catalog):
         dataset['catalog'] = catalog
     return result
 
-def standardize(get, original):
+def standardize(get, colnames, original):
     '''
     Ignore the get function; this is so that different modules'
     standardize functions have the same signature.
     '''
     return _standardize(original)
 
-def _standardize(original):
-    return {
+def _standardize(colnames, original):
+    data = {
         'url': '%(catalog)s/explore/dataset/%(datasetid)s' % original,
         'download_url': '%(catalog)s/explore/dataset/%(datasetid)s/download/?format=csv' % original,
         "title": original['metas']['title'],
@@ -47,5 +47,7 @@ def _standardize(original):
         "creator_id": None,
         "date": datetime.datetime.strptime(original['metas']['modified'], '%Y-%m-%dT%H:%M:%S+00:00'),
         "tags" : set(original['metas']['keyword']),
-        'colnames': set(field['name'] for field in original['fields']) if 'fields' in original else set(),
     }
+    if colnames:
+        data['colnames'] = set(field['name'] for field in original['fields']) if 'fields' in original else set(),
+    return data

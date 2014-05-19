@@ -132,7 +132,7 @@ def test_standardize():
             }
         ]
     }
-    observed = ods._standardize(original)
+    observed = ods._standardize(True, original)
     expected = {
         "url": "http://data.iledefrance.fr/explore/dataset/liste-des-espaces-de-retrait-so-colissimo-sans-horaires",
         'download_url': 'http://data.iledefrance.fr/explore/dataset/liste-des-espaces-de-retrait-so-colissimo-sans-horaires/download/?format=csv' % original,

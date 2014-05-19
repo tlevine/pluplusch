@@ -106,7 +106,7 @@ def test_standardize():
         "ratings_count": 0,
         "revision_id": "a355ad23-6fe9-4217-a893-522417e73cd9"
     }
-    observed = ckan.standardize(should_not_run, original)
+    observed = ckan.standardize(should_not_run, True, original)
     expected = {
         "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
         "download_url": None,
@@ -121,7 +121,7 @@ def test_standardize():
 
     original['resources'][-1]['format'] = 'csv'
     fake_get = lambda url: Response('peanut.butter,jelly\r\n')
-    observed = ckan.standardize(fake_get, original)
+    observed = ckan.standardize(fake_get, True, original)
     expected = {
         "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
         "download_url": "http://www.geoservicos.inde.gov.br/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=MPOG:Transporte_Rodoviario_Acesso&width=1024&height=768&bbox=-74,-34,-29,6",

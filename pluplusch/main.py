@@ -18,7 +18,7 @@ logger = getlogger()
 
 def pluplusch(catalogs = None,
         cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch'),
-        proxies = {}, standardize = False):
+        proxies = {}, standardize = False, colnames = False):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -36,6 +36,8 @@ def pluplusch(catalogs = None,
     standardize
         Should the metadata be reduced and standardized across data
         catalog softwares (True), or should they be kept as is (False)?
+    colnames
+        Should the colnames be extracted?
 
     It returns a generator of datasets.
     '''
@@ -62,7 +64,7 @@ def pluplusch(catalogs = None,
     def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
         for dataset in submodules[catalog_software].metadata(get, catalog_name):
             if standardize:
-                yield submodules[catalog_software].standardize(get, dataset)
+                yield submodules[catalog_software].standardize(get, colnames, dataset)
             else:
                 yield dataset
 

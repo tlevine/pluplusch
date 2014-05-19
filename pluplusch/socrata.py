@@ -91,16 +91,16 @@ def metadata(get, domain):
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         yield from search_results
 
-def standardize(get, original):
+def standardize(get, colnames, original):
     '''
     Ignore the get function; this is so that different modules'
     standardize functions have the same signature.
     '''
-    return _standardize(original)
+    return _standardize(colnames, original)
 
-def _standardize(original):
+def _standardize(colnames, original):
     is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'
-    return {
+    data = {
         'url': '%(catalog)s/d/%(id)s' % original,
         'download_url': '%(catalog)s/resource/%(id)s.csv' % original if is_tabular else None,
         'title': original['name'],
@@ -108,5 +108,7 @@ def _standardize(original):
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],
         'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified'])),
         'tags' : set(original['tags']),
-        'colnames': set(column['fieldName'] for column in original.get('columns',[])),
     }
+    if colnames:
+        data['colnames'] = set(column['fieldName'] for column in original.get('columns',[])),
+    return data

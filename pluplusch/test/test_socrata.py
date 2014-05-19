@@ -15,7 +15,7 @@ def test_views_page():
 def test_standardize_t6ck_kg3u():
     with open(os.path.join('pluplusch', 'test', 'fixtures', 't6ck-kg3u.json'), 'r') as fp:
         original = json.load(fp)
-    observed = socrata._standardize(original)
+    observed = socrata._standardize(True, original)
     expected = {
         'url': 'https://healthmeasures.aspe.hhs.gov/d/t6ck-kg3u',
         'download_url': 'https://healthmeasures.aspe.hhs.gov/resource/t6ck-kg3u.csv',
@@ -31,7 +31,7 @@ def test_standardize_t6ck_kg3u():
 def test_standardize_zt9s_n5aj():
     with open(os.path.join('pluplusch', 'test', 'fixtures', 'zt9s-n5aj.json'), 'r') as fp:
         original = json.load(fp)
-    observed = socrata._standardize(original)
+    observed = socrata._standardize(True, original)
     expected = {
         'url': 'https://data.cityofnewyork.us/d/zt9s-n5aj',
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/5fuc-pqz2',
