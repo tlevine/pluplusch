@@ -103,7 +103,7 @@ def download_url(dataset):
         if resource['format'] in {'tsv','csv'}:
             return resource['url']
 
-def standardize(get, colnames, original):
+def standardize(get, check_colnames, original):
     dl = download_url(original)
     standardized_dataset = {
         "url": '%(catalog)s/dataset/%(name)s' % original,
@@ -114,6 +114,6 @@ def standardize(get, colnames, original):
         "date": datetime.datetime.strptime(original.get('metadata_modified', original['metadata_created']).split('.')[0], '%Y-%m-%dT%H:%M:%S'),
         "tags": set(original['tags']),
     }
-    if colnames:
+    if check_colnames:
         standardized_dataset['colnames'] = set() if dl == None else colnames(StringIO(get(dl).text))
     return standardized_dataset
