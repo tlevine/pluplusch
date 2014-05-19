@@ -1,9 +1,22 @@
 #!/usr/bin/env python3
+import argparse
 import datetime
 import os, sys, json
+
 from pluplusch import pluplusch
 
-cache_dir = os.path.expanduser('~/%s/.pluplusch' % datetime.date.today().isoformat())
-sys.stdout.write('\n')
-for i, dataset in enumerate(pluplusch(cache_dir = cache_dir, proxies = {}, colnames = True)):
-    sys.stdout.write('\r%d metadatas retrieved' % i)
+def args():
+    parser = argparse.ArgpmentParser()
+
+    cache_dir = os.path.expanduser('~/%s/.pluplusch' % datetime.date.today().isoformat())
+    parser.add_argument('--cache-dir', '-d', metavar = 'DIR', default = cache_dir
+
+    parser.add_argument('--colnames', '-c', action = 'store_true', default = True)
+
+    return parser.parse_args()
+
+def main():
+    sys.stdout.write('\n')
+    a = args()
+    for i, dataset in enumerate(pluplusch(cache_dir = a.cache_dir, colnames = a.colnames)):
+        sys.stdout.write('\r%d metadatas retrieved' % i)
