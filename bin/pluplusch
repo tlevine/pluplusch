@@ -5,5 +5,5 @@ from pluplusch import pluplusch
 
 cache_dir = os.path.expanduser('~/%s/.pluplusch' % datetime.date.today().isoformat())
 sys.stdout.write('\n')
-for i, dataset in enumerate(pluplusch(cache_dir = cache_dir, proxies = {}, data = False)):
+for i, dataset in enumerate(pluplusch(cache_dir = cache_dir, proxies = {}, colnames = True)):
     sys.stdout.write('\r%d metadatas retrieved' % i)
