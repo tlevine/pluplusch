@@ -49,5 +49,5 @@ def _standardize(colnames, original):
         "tags" : set(original['metas']['keyword']),
     }
     if colnames:
-        data['colnames'] = set(field['name'] for field in original['fields']) if 'fields' in original else set(),
+        data['colnames'] = [field['name'] for field in original['fields']] if 'fields' in original else []
     return data
