@@ -6,10 +6,10 @@ import os, sys, json
 from pluplusch import pluplusch
 
 def args():
-    parser = argparse.ArgpmentParser()
+    parser = argparse.ArgumentParser()
 
     cache_dir = os.path.expanduser('~/%s/.pluplusch' % datetime.date.today().isoformat())
-    parser.add_argument('--cache-dir', '-d', metavar = 'DIR', default = cache_dir
+    parser.add_argument('--cache-dir', '-d', metavar = 'DIR', default = cache_dir)
 
     parser.add_argument('--colnames', '-c', action = 'store_true', default = True)
 
@@ -20,3 +20,6 @@ def main():
     a = args()
     for i, dataset in enumerate(pluplusch(cache_dir = a.cache_dir, colnames = a.colnames)):
         sys.stdout.write('\r%d metadatas retrieved' % i)
+
+if __name__ == '__main__':
+    main()
