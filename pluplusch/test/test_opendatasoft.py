@@ -141,6 +141,8 @@ def test_standardize():
         "creator_id": None,
         "date":  datetime.datetime(2014, 3, 12, 16, 46, 9),
         "tags" : {"R\u00e9seau postal", "Courrier", "G\u00e9olocalisation"},
-        "colnames": {'type', 'wgs84', 'accessibilite_perssonnes_a_mobilite_reduite', 'ident_pr', 'code_postal', 'code_departement', 'adresse_2', 'adresse_3', 'nom_point_de_retrait', 'adresse_1', 'ville', 'adresse_4'},
+        "colnames": ['ident_pr', 'nom_point_de_retrait', 'adresse_1', 'adresse_2', 'adresse_3', 'adresse_4', 'code_postal', 'code_departement', 'ville', 'accessibilite_perssonnes_a_mobilite_reduite', 'type', 'wgs84'],
     }
+    observed['tags'] = sorted(observed['tags'])
+    expected['tags'] = sorted(expected['tags'])
     n.assert_dict_equal(observed, expected)
