@@ -3,6 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import logging
 import functools
 
+from thready import threaded
 from pickle_warehouse import Warehouse
 from picklecache import cache
 import requests
@@ -108,4 +109,4 @@ def pluplusch(catalogs = None, standardize = True, download_data = False,
             raise ValueError('%d response at %s' % (response.status_code, url))
 
     yield from _pluplusch(get, catalogs = catalogs, standardize = standardize,
-                          download_data = download_data, cache_dir = cache_dir)
+                          download_data = download_data)

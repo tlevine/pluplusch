@@ -18,8 +18,7 @@ def arg_parser():
     return parser
 
 def main(stdout = sys.stdout):
-    p = arg_parser()
-    p.parse_args()
+    p = arg_parser().parse_args()
 
     generator = pluplusch(catalogs = p.catalog, cache_dir = p.cache_dir, standardize = True, download_data = p.download_data)
     for dataset in generator:
