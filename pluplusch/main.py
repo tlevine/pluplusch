@@ -18,7 +18,8 @@ def getlogger():
 logger = getlogger()
 
 def _pluplusch(get, catalogs = None,
-        cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch'))
+        cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch'),
+        standardize = True, download_data = False)
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -30,6 +31,11 @@ def _pluplusch(get, catalogs = None,
         doesn't know about the catalog
     cache_dir
         String directory to cache downloads to
+    standardize
+        Should the metadata schema be standardized across softwares?
+    download_data
+        Should the full data file be downloaded if needed?
+        (This is only relevant if standardize is True.)
 
     It returns a generator of datasets.
     '''
@@ -50,30 +56,23 @@ def _pluplusch(get, catalogs = None,
     def enqueue_datasets(catalog_name_software):
         catalog_name, catalog_software = catalog_name_software
         for dataset in submodules[catalog_software].metadata(get, catalog_name):
-            dataset['_catalog'] = catalog_name
-            dataset['_software'] = catalog_software
-            queue.append(dataset)
+            if not standardize:
+                out = dataset
+                out['_catalog'] = catalog_name
+                out['_software'] = catalog_software
+            else:
+                out = submodules[_software].standardize(original)
+                if catalog_software == 'ckan' and not download_data:
+                    # Getting column names from CKAN involves downloading all the data
+                    out['colnames'] = set()
+                else:
+                    out['colnames'] = submodules[catalog_software].colnames(get, dataset)
+            queue.append(out)
         running.remove(catalog_name)
     threaded(catalog_names_softwares, enqueue_datasets)
     while len(running) > 0:
         if queue != []:
             yield queue.pop(0)
-
-def download_url(original:dict) -> str:
-    'Get the URL for the full data download.'
-    return standardize(lambda x:None, original)["download_url"]
-
-def standardize(get, original:dict, download_data = False, submodules = i.submodules()):
-    'Convert the assorted metadata formats from different softwares into one.'
-    _software = original['_software']
-    _catalog = original['_catalog']
-    out = submodules[_software].standardize(original)
-    if original['_software'] == 'ckan' and not download_data:
-        # Getting column names from CKAN involves downloading all the data
-        out['colnames'] = set()
-    else:
-        out['colnames'] = submodules[_software].colnames(get, original)
-    return out
 
 @cache(cache_dir, mutable = False)
 def _get(url):

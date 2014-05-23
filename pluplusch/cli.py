@@ -17,10 +17,10 @@ def main(stdout = sys.stdout):
     p = arg_parser()
     p.parse_args()
 
-    for nonstandard_metadata in pluplusch(catalogs = p.catalogs, cache_dir = p.cache_dir):
-        if p.urls:
-            url = download_url(nonstandard_metadata)
+    generator = pluplusch(catalogs = p.catalogs, cache_dir = p.cache_dir, standardize = True, download_data = p.download_data)
+    for dataset in generator:
+        if p.url:
+            url = metadata['download_url']
             stdout.write(url + '\n')
         else:
-            standard_metadata = standardize(nonstandard_metadata, download_data = p.download_data)
-            stdout.write(json.dumps(standard_metadata) + '\n')
+            stdout.write(json.dumps(metadata) + '\n')
