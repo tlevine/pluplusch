@@ -2,6 +2,8 @@ import argparse
 import json
 import sys
 
+from pluplusch.main import pluplusch
+
 def arg_parser():
     parser = argparse.ArgumentParser()
 
@@ -17,7 +19,7 @@ def main(stdout = sys.stdout):
     p = arg_parser()
     p.parse_args()
 
-    generator = pluplusch(catalogs = p.catalogs, cache_dir = p.cache_dir, standardize = True, download_data = p.download_data)
+    generator = pluplusch(catalogs = p.catalog, cache_dir = p.cache_dir, standardize = True, download_data = p.download_data)
     for dataset in generator:
         if p.url:
             url = metadata['download_url']

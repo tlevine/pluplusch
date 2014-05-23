@@ -17,9 +17,7 @@ def getlogger():
     return logger
 logger = getlogger()
 
-def _pluplusch(get, catalogs = None,
-        cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch'),
-        standardize = True, download_data = False)
+def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -29,8 +27,6 @@ def _pluplusch(get, catalogs = None,
         a full URL string, including the scheme, or a tuple
         of the full URL string and the software, in case pluplusch
         doesn't know about the catalog
-    cache_dir
-        String directory to cache downloads to
     standardize
         Should the metadata schema be standardized across softwares?
     download_data
@@ -74,20 +70,42 @@ def _pluplusch(get, catalogs = None,
         if queue != []:
             yield queue.pop(0)
 
-@cache(cache_dir, mutable = False)
-def _get(url):
-    return requests.get(url, proxies = proxies, verify = False)
-def get(url):
-    try:
-        response = _get(url)
-    except Exception as e:
-        logger.error('Could not download ' + url)
-        logger.error(e)
-        raise e
-    if response.ok:
-        return response
-    else:
-        raise ValueError('%d response at %s' % (response.status_code, url))
+def pluplusch(catalogs = None, standardize = True, download_data = False,
+        cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch')):
+    '''
+    pluplusch downloads data from open data websites. Here are
+    its inputs.
 
-pluplusch = functools.partial(_pluplusch, get)
-pluplusch.__doc__ = _pluplusch.__doc__
+    cache_dir
+        Directory to store the cache in
+    catalogs
+        List of catalogs to download, each item being either
+        a full URL string, including the scheme, or a tuple
+        of the full URL string and the software, in case pluplusch
+        doesn't know about the catalog
+    standardize
+        Should the metadata schema be standardized across softwares?
+    download_data
+        Should the full data file be downloaded if needed?
+        (This is only relevant if standardize is True.)
+
+    It returns a generator of datasets.
+    '''
+
+    @cache(cache_dir, mutable = False)
+    def _get(url):
+        return requests.get(url, verify = False)
+    def get(url):
+        try:
+            response = _get(url)
+        except Exception as e:
+            logger.error('Could not download ' + url)
+            logger.error(e)
+            raise e
+        if response.ok:
+            return response
+        else:
+            raise ValueError('%d response at %s' % (response.status_code, url))
+
+    yield from _pluplusch(get, catalogs = catalogs, standardize = standardize,
+                          download_data = download_data, cache_dir = cache_dir)
