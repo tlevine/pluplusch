@@ -1,9 +1,9 @@
 from distutils.core import setup
 
-from pluplusch import __version__
+from pluplusch.meta import __version__, __author__
 
 setup(name='pluplusch',
-      author='Thomas Levine',
+      author=__author__,
       author_email='_@thomaslevine.com',
       description='Big dada: Download data from lots of open data platforms.',
       url='https://github.com/tlevine/pluplusch',
