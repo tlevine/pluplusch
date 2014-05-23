@@ -13,6 +13,7 @@ setup(name='pluplusch',
           'requests>=2.2.1',
           'pickle_warehouse>=0.0.17'
       ],
+      scripts = ['bin/pluplusch'],
       tests_require = ['nose'],
       version=__version__,
       license='AGPL',
