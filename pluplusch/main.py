@@ -18,7 +18,7 @@ logger = getlogger()
 
 def pluplusch(catalogs = None,
         cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch'),
-        proxies = {}, standardize = False, colnames = False):
+        proxies = {}, standardize = True, download_data = False, csv = False):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -63,14 +63,13 @@ def pluplusch(catalogs = None,
 
     def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
         for dataset in submodules[catalog_software].metadata(get, catalog_name):
+            out = dict(dataset)
             if standardize:
-                try:
-                    yield submodules[catalog_software].standardize(get, colnames, dataset)
-                except Exception as e:
-                    logger.error('Unable to standardize this dataset:\n%s\n' % str(dataset))
-                    logger.error(e)
-            else:
-                yield dataset
+                out = submodules[catalog_software].standardize(dataset)
+                out['colnames'] = set()
+                if download_data or catalog_software != 'ckan':
+                    out['colnames'] = submodules[catalog_software].colnames(get, dataset)
+            yield out
 
     catalog_names = ((catalog[0] if len(catalog) == 2 else catalog) for catalog in catalogs)
     catalog_softwares = ((catalog[1] if len(catalog) == 2 else i.catalog_to_software(catalog)) for catalog in catalogs)
