@@ -42,9 +42,9 @@ def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
         catalogs = list(i.all_catalogs())
 
     # Detect catalog softwares if they're not specified.
-    catalog_names = ((catalog[0] if len(catalog) == 2 else catalog) for catalog in catalogs)
-    catalog_softwares = ((catalog[1] if len(catalog) == 2 else i.catalog_to_software(catalog)) for catalog in catalogs)
-    catalog_names_softwares = zip(catalog_names, catalog_softwares)
+    catalog_names = [(catalog[0] if len(catalog) == 2 else catalog) for catalog in catalogs]
+    catalog_softwares = [(catalog[1] if len(catalog) == 2 else i.catalog_to_software(catalog)) for catalog in catalogs]
+    catalog_names_softwares = list(zip(catalog_names, catalog_softwares))
 
     # Threading
     queue = []
@@ -58,7 +58,7 @@ def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
                 out['_catalog'] = catalog_name
                 out['_software'] = catalog_software
             else:
-                out = submodules[_software].standardize(original)
+                out = submodules[catalog_software].standardize(dataset)
                 if catalog_software == 'ckan' and not download_data:
                     # Getting column names from CKAN involves downloading all the data
                     out['colnames'] = set()
@@ -66,8 +66,12 @@ def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
                     out['colnames'] = submodules[catalog_software].colnames(get, dataset)
             queue.append(out)
         running.remove(catalog_name)
-    threaded(catalog_names_softwares, enqueue_datasets)
+
+    threaded(catalog_names_softwares, enqueue_datasets, join = False)
+
+    from time import sleep
     while len(running) > 0:
+        sleep(0.0001)
         if queue != []:
             yield queue.pop(0)
 

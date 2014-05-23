@@ -21,9 +21,14 @@ def main(stdout = sys.stdout):
     p = arg_parser().parse_args()
 
     generator = pluplusch(catalogs = p.catalog, cache_dir = p.cache_dir, standardize = True, download_data = p.download_data)
-    for dataset in generator:
-        if p.url:
+    for metadata in generator:
+        if p.urls:
             url = metadata['download_url']
             stdout.write(url + '\n')
         else:
+            for k,v in metadata.items():
+                if isinstance(v, datetime.datetime):
+                    metadata[k] = v.isoformat()
+                elif isinstance(v, set):
+                    metadata[k] = list(v)
             stdout.write(json.dumps(metadata) + '\n')

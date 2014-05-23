@@ -103,7 +103,7 @@ def download_url(dataset):
         if resource['format'] in {'tsv','csv'}:
             return resource['url']
 
-def standardize(get, original):
+def standardize(original):
     dl = download_url(original)
     standardized_dataset = {
         "url": '%(catalog)s/dataset/%(name)s' % original,
