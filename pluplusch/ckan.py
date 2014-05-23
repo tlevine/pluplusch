@@ -110,4 +110,5 @@ def standardize(original):
     return standardized_dataset
 
 def colnames(get, original:dict) -> list:
+    dl = download_url(original)
     standardized_dataset['colnames'] = set() if dl == None else _colnames(StringIO(get(dl).text))

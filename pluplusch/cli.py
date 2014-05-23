@@ -26,6 +26,7 @@ def main(stdout = sys.stdout):
             url = metadata['download_url']
             if url != None:
                 stdout.write(url + '\n')
+                stdout.flush()
         else:
             for k,v in metadata.items():
                 if isinstance(v, datetime.datetime):
@@ -33,3 +34,4 @@ def main(stdout = sys.stdout):
                 elif isinstance(v, set):
                     metadata[k] = list(v)
             stdout.write(json.dumps(metadata) + '\n')
+            stdout.flush()
