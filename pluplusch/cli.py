@@ -12,7 +12,7 @@ def arg_parser():
     cache_dir = os.path.expanduser('~/.pluplusch/' + datetime.date.today().isoformat())
     parser.add_argument('--cache-dir', '-d', metavar = 'DIR', default = cache_dir)
     parser.add_argument('--download-data', '-D', action = 'store_true', default = False)
-    parser.add_argument('--urls', '-u', action = 'store_true', default = True)
+    parser.add_argument('--urls', '-u', action = 'store_true', default = False)
     parser.add_argument('catalog', metavar = 'CATALOG', nargs = '*')
 
     return parser
