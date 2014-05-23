@@ -9,6 +9,7 @@ setup(name='pluplusch',
       url='https://github.com/tlevine/pluplusch',
       packages=['pluplusch'],
       install_requires = [
+          'thready>=0.1.4',
           'picklecache>=0.0.3',
           'requests>=2.2.1',
           'pickle_warehouse>=0.0.17'
