@@ -16,9 +16,9 @@ def getlogger():
     return logger
 logger = getlogger()
 
-def pluplusch(catalogs = None,
+def pluplusch(get, catalogs = None,
         cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch'),
-        proxies = {}, standardize = True, download_data = False, csv = False):
+        proxies = {})
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -33,29 +33,9 @@ def pluplusch(catalogs = None,
     proxies
         A dictionary containing any or neither of "http_proxy"
         and "https_proxy"
-    standardize
-        Should the metadata be reduced and standardized across data
-        catalog softwares (True), or should they be kept as is (False)?
-    colnames
-        Should the colnames be extracted?
 
     It returns a generator of datasets.
     '''
-
-    @cache(cache_dir, mutable = False)
-    def _get(url):
-        return requests.get(url, proxies = proxies, verify = False)
-    def get(url):
-        try:
-            response = _get(url)
-        except Exception as e:
-            logger.error('Could not download ' + url)
-            logger.error(e)
-            raise e
-        if response.ok:
-            return response
-        else:
-            raise ValueError('%d response at %s' % (response.status_code, url))
 
     if catalogs == None:
         # Use all catalogs.
@@ -63,13 +43,7 @@ def pluplusch(catalogs = None,
 
     def dataset_generator(catalog_name, catalog_software, submodules = i.submodules()):
         for dataset in submodules[catalog_software].metadata(get, catalog_name):
-            out = dict(dataset)
-            if standardize:
-                out = submodules[catalog_software].standardize(dataset)
-                out['colnames'] = set()
-                if download_data or catalog_software != 'ckan':
-                    out['colnames'] = submodules[catalog_software].colnames(get, dataset)
-            yield out
+            yield dataset
 
     catalog_names = ((catalog[0] if len(catalog) == 2 else catalog) for catalog in catalogs)
     catalog_softwares = ((catalog[1] if len(catalog) == 2 else i.catalog_to_software(catalog)) for catalog in catalogs)
@@ -104,3 +78,21 @@ def pluplusch(catalogs = None,
                         del(generators[catalog_name])
                         logger.error('Error on ' + catalog_name)
                         logger.error(future.exception())
+
+def standardize(get, original, download_data = False, csv = False):
+
+
+@cache(cache_dir, mutable = False)
+def _get(url):
+    return requests.get(url, proxies = proxies, verify = False)
+def get(url):
+    try:
+        response = _get(url)
+    except Exception as e:
+        logger.error('Could not download ' + url)
+        logger.error(e)
+        raise e
+    if response.ok:
+        return response
+    else:
+        raise ValueError('%d response at %s' % (response.status_code, url))
