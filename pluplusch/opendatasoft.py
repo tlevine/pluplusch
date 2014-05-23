@@ -42,7 +42,7 @@ def standardize(original:dict) -> dict:
         "creator_name" : original['metas']['publisher'],
         "creator_id": None,
         "date": datetime.datetime.strptime(original['metas']['modified'], '%Y-%m-%dT%H:%M:%S+00:00'),
-        "tags" : set(original['metas']['keyword']),
+        "tags" : set(original['metas'].get('keyword',[])),
     }
     return data
 
