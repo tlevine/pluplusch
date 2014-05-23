@@ -7,8 +7,6 @@ from logging import getLogger
 
 from pluplusch.csv_colnames import colnames as _colnames
 
-logger = getLogger(__name__)
-
 catalogs = [
 #   (('http',), 'datahub.io'),
     (('http',), 'opendata.comune.bari.it'),
@@ -91,12 +89,7 @@ def metadata(get, catalog):
             break
         else:
             for dataset_id in result:
-                try:
-                    yield rest(get, catalog, dataset_id)
-                except Exception as e:
-                    logger.error('Error at %s, %s' % (catalog, dataset_id))
-                    logger.error(e)
-                    break
+                yield rest(get, catalog, dataset_id)
 
 def download_url(dataset):
     for resource in dataset['resources']:

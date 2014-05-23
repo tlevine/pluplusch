@@ -9,7 +9,7 @@ from picklecache import cache
 import requests
 
 import pluplusch.index as i
- 
+
 def getlogger():
     logger = logging.getLogger(__name__)
     fp_stream = logging.StreamHandler()
@@ -52,19 +52,24 @@ def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
     submodules = i.submodules()
     def enqueue_datasets(catalog_name_software):
         catalog_name, catalog_software = catalog_name_software
-        for dataset in submodules[catalog_software].metadata(get, catalog_name):
-            if not standardize:
-                out = dataset
-                out['_catalog'] = catalog_name
-                out['_software'] = catalog_software
-            else:
-                out = submodules[catalog_software].standardize(dataset)
-                if catalog_software == 'ckan' and not download_data:
-                    # Getting column names from CKAN involves downloading all the data
-                    out['colnames'] = set()
+        try:
+            for dataset in submodules[catalog_software].metadata(get, catalog_name):
+                if not standardize:
+                    out = dataset
+                    out['_catalog'] = catalog_name
+                    out['_software'] = catalog_software
                 else:
-                    out['colnames'] = submodules[catalog_software].colnames(get, dataset)
-            queue.append(out)
+                    out = submodules[catalog_software].standardize(dataset)
+                    if catalog_software == 'ckan' and not download_data:
+                        # Getting column names from CKAN involves downloading all the data
+                        out['colnames'] = set()
+                    else:
+                        out['colnames'] = submodules[catalog_software].colnames(get, dataset)
+                queue.append(out)
+        except Exception as e:
+            logger.error(e)
+#           raise e
+
         running.remove(catalog_name)
 
     threaded(catalog_names_softwares, enqueue_datasets, join = False)
