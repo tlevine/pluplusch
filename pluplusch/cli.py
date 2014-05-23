@@ -24,7 +24,8 @@ def main(stdout = sys.stdout):
     for metadata in generator:
         if p.urls:
             url = metadata['download_url']
-            stdout.write(url + '\n')
+            if url != None:
+                stdout.write(url + '\n')
         else:
             for k,v in metadata.items():
                 if isinstance(v, datetime.datetime):
