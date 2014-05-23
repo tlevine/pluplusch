@@ -50,6 +50,7 @@ def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
     queue = []
     running = set(catalog_names)
     submodules = i.submodules()
+
     def enqueue_datasets(catalog_name_software):
         catalog_name, catalog_software = catalog_name_software
         try:
@@ -68,8 +69,6 @@ def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
                 queue.append(out)
         except Exception as e:
             logger.error(e)
-#           raise e
-
         running.remove(catalog_name)
 
     threaded(catalog_names_softwares, enqueue_datasets, join = False)
