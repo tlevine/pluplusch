@@ -21,3 +21,8 @@ def generator_args(parsed_args):
             # pluplusch with download_data flag on
             out['download_data'] = True
     return out
+
+# I think it should be a separate function for standardizing;
+# pluplusch just emits the raw metadata with two extra fields:
+# * Catalog name (https://data.gov.uk)
+# * Catalog software (ckan)
