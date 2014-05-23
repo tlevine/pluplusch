@@ -38,7 +38,7 @@ def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
     '''
 
     # Use all catalogs by default.
-    if catalogs == None:
+    if catalogs == []:
         catalogs = list(i.all_catalogs())
 
     # Detect catalog softwares if they're not specified.
