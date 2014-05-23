@@ -18,7 +18,7 @@ def getlogger():
     return logger
 logger = getlogger()
 
-def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
+def _pluplusch(get, catalogs = [], standardize = True, download_data = False):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -79,7 +79,7 @@ def _pluplusch(get, catalogs = None, standardize = True, download_data = False):
         if queue != []:
             yield queue.pop(0)
 
-def pluplusch(catalogs = None, standardize = True, download_data = False,
+def pluplusch(catalogs = [], standardize = True, download_data = False,
         cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch')):
     '''
     pluplusch downloads data from open data websites. Here are
