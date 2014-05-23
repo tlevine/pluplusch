@@ -89,14 +89,7 @@ def metadata(get, domain):
     for search_results in itertools.takewhile(lambda x: x != [], pages):
         yield from search_results
 
-def standardize(get, check_colnames:bool, original):
-    '''
-    Ignore the get function; this is so that different modules'
-    standardize functions have the same signature.
-    '''
-    return _standardize(check_colnames, original)
-
-def _standardize(check_colnames, original):
+def standardize(original:dict) -> dict:
     is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'
     data = {
         'url': '%(catalog)s/d/%(id)s' % original,
@@ -107,6 +100,12 @@ def _standardize(check_colnames, original):
         'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified'])),
         'tags' : set(original.get('tags',[])),
     }
-    if check_colnames:
-        data['colnames'] = [column['fieldName'] for column in original.get('columns',[])]
     return data
+
+def colnames(get, original:dict) -> list:
+    '''
+    Get the column names for a dataset
+    '''
+    # Ignore the get function; this is so that different modules'
+    # colnames functions have the same signature.
+    return [column['fieldName'] for column in original.get('columns',[])]
