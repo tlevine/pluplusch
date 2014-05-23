@@ -60,8 +60,9 @@ def pluplusch(get, catalogs = None,
 
 def download_url(original:dict) -> str:
     'Get the URL for the full data download.'
+    return standardize(lambda x:None, original)["download_url"]
 
-def standardize(get, original:dict, download_data = False):
+def standardize(get, original:dict, download_data = False, submodules = i.submodules()):
     'Convert the assorted metadata formats from different softwares into one.'
     _software = original['_software']
     _catalog = original['_catalog']
@@ -70,7 +71,7 @@ def standardize(get, original:dict, download_data = False):
         # Getting column names from CKAN involves downloading all the data
         out['colnames'] = set()
     else:
-        out['colnames'] = submodules[_software].colnames(original)
+        out['colnames'] = submodules[_software].colnames(get, original)
     return out
 
 @cache(cache_dir, mutable = False)
