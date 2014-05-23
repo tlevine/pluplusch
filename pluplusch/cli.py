@@ -1,4 +1,6 @@
 import argparse
+import json
+import sys
 
 def arg_parser():
     parser = argparse.ArgumentParser()
@@ -6,23 +8,19 @@ def arg_parser():
     cache_dir = os.path.expanduser('~/.pluplusch/' + datetime.date.today().isoformat())
     parser.add_argument('--cache-dir', '-d', metavar = 'DIR', default = cache_dir)
     parser.add_argument('--download-data', '-D', action = 'store_true', default = True)
-    parser.add_argument('--csv-urls', '-,', action = 'store_true', default = True)
+    parser.add_argument('--urls', '-u', action = 'store_true', default = True)
+    parser.add_argument('catalog', metavar = 'CATALOG', nargs = '*')
 
     return parser
 
-def generator_args(parsed_args):
-    out = {}
-    out['cache_dir'] = parsed_args.cache_dir
-    if parsed_args.csv_urls:
-        # pluplusch with csv flag on
-        out['csv'] = True
-    else:
-        if parsed_args.download_data:
-            # pluplusch with download_data flag on
-            out['download_data'] = True
-    return out
+def main(stdout = sys.stdout):
+    p = arg_parser()
+    p.parse_args()
 
-# I think it should be a separate function for standardizing;
-# pluplusch just emits the raw metadata with two extra fields:
-# * Catalog name (https://data.gov.uk)
-# * Catalog software (ckan)
+    for nonstandard_metadata in pluplusch(catalogs = p.catalogs, cache_dir = p.cache_dir):
+        if p.urls:
+            url = download_url(nonstandard_metadata)
+            stdout.write(url + '\n')
+        else:
+            standard_metadata = standardize(nonstandard_metadata, download_data = p.download_data)
+            stdout.write(json.dumps(standard_metadata) + '\n')

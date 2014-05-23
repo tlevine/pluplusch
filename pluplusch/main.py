@@ -1,6 +1,7 @@
 import os
 from concurrent.futures import ThreadPoolExecutor
 import logging
+import functools
 
 from pickle_warehouse import Warehouse
 from picklecache import cache
@@ -16,7 +17,7 @@ def getlogger():
     return logger
 logger = getlogger()
 
-def pluplusch(get, catalogs = None,
+def _pluplusch(get, catalogs = None,
         cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch'))
     '''
     pluplusch downloads data from open data websites. Here are
@@ -88,3 +89,6 @@ def get(url):
         return response
     else:
         raise ValueError('%d response at %s' % (response.status_code, url))
+
+pluplusch = functools.partial(_pluplusch, get)
+pluplusch.__doc__ = _pluplusch.__doc__
