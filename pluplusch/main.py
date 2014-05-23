@@ -49,6 +49,8 @@ def pluplusch(get, catalogs = None,
     def enqueue_datasets(catalog_name_software):
         catalog_name, catalog_software = catalog_name_software
         for dataset in submodules[catalog_software].metadata(get, catalog_name):
+            dataset['_catalog'] = catalog_name
+            dataset['_software'] = catalog_software
             queue.append(dataset)
         running.remove(catalog_name)
     threaded(catalog_names_softwares, enqueue_datasets)
@@ -56,8 +58,20 @@ def pluplusch(get, catalogs = None,
         if queue != []:
             yield queue.pop(0)
 
-def standardize(get, original, download_data = False, csv = False):
+def download_url(original:dict) -> str:
+    'Get the URL for the full data download.'
 
+def standardize(get, original:dict, download_data = False):
+    'Convert the assorted metadata formats from different softwares into one.'
+    _software = original['_software']
+    _catalog = original['_catalog']
+    out = submodules[_software].standardize(original)
+    if original['_software'] == 'ckan' and not download_data:
+        # Getting column names from CKAN involves downloading all the data
+        out['colnames'] = set()
+    else:
+        out['colnames'] = submodules[_software].colnames(original)
+    return out
 
 @cache(cache_dir, mutable = False)
 def _get(url):
