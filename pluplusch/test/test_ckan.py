@@ -106,7 +106,7 @@ def test_standardize():
         "ratings_count": 0,
         "revision_id": "a355ad23-6fe9-4217-a893-522417e73cd9"
     }
-    observed = ckan.standardize(should_not_run, True, original)
+    observed = ckan.standardize(original)
     expected = {
         "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
         "download_url": None,
