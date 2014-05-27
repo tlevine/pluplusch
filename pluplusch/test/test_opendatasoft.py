@@ -146,5 +146,5 @@ def test_standardize():
     def fake_get(_):
         raise AssertionError('This should not run.')
     observed_colnames = ods.colnames(fake_get, original)
-    expected_colnames = ['ident_pr', 'nom_point_de_retrait', 'adresse_1', 'adresse_2', 'adresse_3', 'adresse_4', 'code_postal', 'code_departement', 'ville', 'accessibilite_perssonnes_a_mobilite_reduite', 'type', 'wgs84'],
+    expected_colnames = ['ident_pr', 'nom_point_de_retrait', 'adresse_1', 'adresse_2', 'adresse_3', 'adresse_4', 'code_postal', 'code_departement', 'ville', 'accessibilite_perssonnes_a_mobilite_reduite', 'type', 'wgs84']
     n.assert_list_equal(observed_colnames, expected_colnames)
