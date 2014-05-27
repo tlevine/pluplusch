@@ -7,5 +7,5 @@ from pluplusch.csv_colnames import colnames
 def test_csv_colnames():
     fp = StringIO('a;b;c;d\r\n3;8;9;2\r\n')
     observed = colnames(fp, delimiter = ';')
-    expected = set('abcd')
-    n.assert_set_equal(observed, expected)
+    expected = list('abcd')
+    n.assert_list_equal(observed, expected)
