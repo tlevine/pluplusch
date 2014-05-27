@@ -62,7 +62,7 @@ def test_standardize_tags():
     }
     n.assert_dict_equal(observed, expected)
 
-def test_standardize_niuh-hrin():
+def test_standardize_niuh_hrin():
     with open(os.path.join('pluplusch', 'test', 'fixtures', 'niuh-hrin.json'), 'r') as fp:
         original = json.load(fp)
     observed = socrata.standardize(True, original)
