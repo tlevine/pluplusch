@@ -42,7 +42,9 @@ def test_standardize_zt9s_n5aj():
     }
     n.assert_dict_equal(observed, expected)
 
-    observed_colnames = socrata.colnames(original)
+    def fake_get(_):
+        raise AssertionError('This should not run.')
+    observed_colnames = socrata.colnames(fake_get, original)
     expected_colnames = [
         'dbn','school_name','number_of_test_takers',
         'critical_reading_mean', 'mathematics_mean', 'writing_mean',
