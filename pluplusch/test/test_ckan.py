@@ -128,7 +128,7 @@ def test_standardize():
         "creator_name": "Ernesto Batista da Silva Filho",
         "creator_id": "ernesto.silva-filho@planejamento.gov.br",
         "date": datetime.datetime(2013, 12, 3, 14, 38, 48),
-        "tags": {"INDE"},
+        "tags": ["INDE"],
     }
     n.assert_dict_equal(observed, expected)
     observed_colnames = ckan.colnames(fake_get, original)

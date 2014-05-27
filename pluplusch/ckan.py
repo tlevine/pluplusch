@@ -105,10 +105,10 @@ def standardize(original):
         "creator_name": original.get("maintainer", original["author"]),
         "creator_id": original.get("maintainer_email", original["author_email"]), 
         "date": datetime.datetime.strptime(original.get('metadata_modified', original['metadata_created']).split('.')[0], '%Y-%m-%dT%H:%M:%S'),
-        "tags": set(original['tags']),
+        "tags": original['tags'],
     }
     return standardized_dataset
 
 def colnames(get, original:dict) -> list:
     dl = download_url(original)
-    standardized_dataset['colnames'] = set() if dl == None else _colnames(StringIO(get(dl).text))
+    return [] if dl == None else _colnames(StringIO(get(dl).text))
