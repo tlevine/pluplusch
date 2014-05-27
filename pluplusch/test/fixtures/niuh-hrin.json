@@ -1,0 +1,65 @@
+{
+  "id" : "niuh-hrin",
+  "name" : "Commuter Van Services - Vehicles",
+  "attribution" : "Taxi and Limousine Commission (TLC)",
+  "averageRating" : 0,
+  "category" : "Transportation",
+  "createdAt" : 1317329250,
+  "description" : "Commuter Van Authorizations provide pre-arranged transportation to passengers throughout New York City on a regular daily basis. They are authorized to operate within specific geographic areas. This list includes detailed vehicle information, including affiliated base, license numbers, names(s) of licensees, DMV license plate and VIN numbers, license types, expiration date, and model year.",
+  "displayType" : "href",
+  "downloadCount" : 151,
+  "indexUpdatedAt" : 1389196400,
+  "newBackend" : false,
+  "numberOfComments" : 0,
+  "oid" : 336992,
+  "publicationAppendEnabled" : false,
+  "publicationDate" : 1318354368,
+  "publicationGroup" : 242037,
+  "publicationStage" : "published",
+  "tableId" : 242037,
+  "totalTimesRated" : 0,
+  "viewCount" : 103,
+  "viewLastModified" : 1389195473,
+  "viewType" : "href",
+  "columns" : [ ],
+  "grants" : [ {
+    "inherited" : false,
+    "type" : "viewer",
+    "flags" : [ "public" ]
+  } ],
+  "metadata" : {
+    "custom_fields" : {
+      "Update" : {
+        "Update Frequency" : "Daily"
+      }
+    },
+    "renderTypeConfig" : {
+      "visible" : {
+        "href" : true
+      }
+    },
+    "availableDisplayTypes" : [ "href" ],
+    "accessPoints" : {
+      "xls" : "http://www.nyc.gov/html/tlc/downloads/excel/current_commuter_vans.xls"
+    }
+  },
+  "owner" : {
+    "id" : "5fuc-pqz2",
+    "displayName" : "NYC OpenData",
+    "roleName" : "administrator",
+    "screenName" : "NYC OpenData",
+    "rights" : [ "create_datasets", "edit_others_datasets", "edit_sdp", "edit_site_theme", "moderate_comments", "manage_users", "chown_datasets", "edit_nominations", "approve_nominations", "feature_items", "federations", "manage_stories", "manage_approval", "change_configurations", "view_domain", "view_others_datasets", "edit_pages", "create_pages", "short_session", "view_goals", "view_dashboards", "edit_goals", "edit_dashboards", "create_dashboards" ]
+  },
+  "query" : {
+  },
+  "rights" : [ "read" ],
+  "tableAuthor" : {
+    "id" : "rnig-m3uj",
+    "displayName" : "Jorge J.",
+    "profileImageUrlLarge" : "/images/profile/5083/4460/large-profile_large.png",
+    "profileImageUrlMedium" : "/images/profile/5083/4460/large-profile_thumb.png",
+    "profileImageUrlSmall" : "/images/profile/5083/4460/large-profile_tiny.png",
+    "screenName" : "Jorge J."
+  },
+  "flags" : [ "default" ]
+}
