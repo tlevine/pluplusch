@@ -115,13 +115,12 @@ def test_standardize():
         "creator_id": "ernesto.silva-filho@planejamento.gov.br",
         "date": datetime.datetime(2013, 12, 3, 14, 38, 48),
         "tags": {"INDE"},
-        "colnames": set(),
     }
     n.assert_dict_equal(observed, expected)
 
     original['resources'][-1]['format'] = 'csv'
     fake_get = lambda url: Response('peanut.butter,jelly\r\n')
-    observed = ckan.standardize(fake_get, True, original)
+    observed = ckan.standardize(original)
     expected = {
         "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
         "download_url": "http://www.geoservicos.inde.gov.br/geoserver/wms?service=WMS&version=1.1.0&request=GetMap&layers=MPOG:Transporte_Rodoviario_Acesso&width=1024&height=768&bbox=-74,-34,-29,6",
@@ -130,6 +129,8 @@ def test_standardize():
         "creator_id": "ernesto.silva-filho@planejamento.gov.br",
         "date": datetime.datetime(2013, 12, 3, 14, 38, 48),
         "tags": {"INDE"},
-        "colnames": {'peanut.butter','jelly'},
     }
     n.assert_dict_equal(observed, expected)
+    observed_colnames = ckan.colnames(fake_get, original)
+    expected_colnames = ['peanut.butter','jelly']
+    n.assert_list_equal(observed_colnames, expected_colnames)
