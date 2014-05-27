@@ -40,11 +40,14 @@ def test_standardize_zt9s_n5aj():
         'tags': {'lifelong learning'},
         'title': 'SAT (College Board) 2010 School Level Results',
     }
-    #   'colnames': [
-    #       'dbn','school_name','number_of_test_takers',
-    #       'critical_reading_mean', 'mathematics_mean', 'writing_mean',
-    #   ],
     n.assert_dict_equal(observed, expected)
+
+    observed_colnames = socrata.colnames(original)
+    expected_colnames = [
+        'dbn','school_name','number_of_test_takers',
+        'critical_reading_mean', 'mathematics_mean', 'writing_mean',
+    ]
+    n.assert_list_equal(observed_colnames, expected_colnames)
 
 def test_standardize_tags():
     original = {'tableAuthor': {'screenName': 'Clare', 'profileImageUrlSmall': '/images/profile/2234/2577/180561_10150096076666249_317976_n_tiny.jpg', 'displayName': 'Clare', 'rights': ['create_datasets', 'edit_others_datasets', 'edit_sdp', 'edit_site_theme', 'moderate_comments', 'manage_users', 'chown_datasets', 'edit_nominations', 'approve_nominations', 'feature_items', 'federations', 'manage_stories', 'manage_approval', 'change_configurations', 'view_domain', 'view_others_datasets', 'edit_pages', 'create_pages', 'view_goals', 'view_dashboards', 'edit_goals', 'edit_dashboards', 'create_dashboards'], 'profileImageUrlMedium': '/images/profile/2234/2577/180561_10150096076666249_317976_n_thumb.jpg', 'profileImageUrlLarge': '/images/profile/2234/2577/180561_10150096076666249_317976_n_large.jpg', 'flags': ['admin'], 'id': 'rqdg-xj2v'}, 'displayType': 'table', 'viewType': 'tabular', 'publicationGroup': 240034, 'newBackend': False, 'publicationDate': 1354232726, 'catalog': 'https://data.undp.org', 'rowsUpdatedBy': 'rqdg-xj2v', 'averageRating': 0, 'viewCount': 167, 'publicationStage': 'published', 'grants': [{'inherited': True, 'flags': ['public'], 'type': 'viewer'}], 'viewLastModified': 1319223058, 'rights': ['read'], 'oid': 1867464, 'numberOfComments': 0, 'rowsUpdatedAt': 1354232632, 'createdAt': 1319223058, 'publicationAppendEnabled': False, 'owner': {'screenName': 'UNDP Transparency', 'displayName': 'UNDP Transparency', 'id': '67n2-h4v3'}, 'indexUpdatedAt': 1397848594, 'moderationStatus': True, 'downloadCount': 67, 'metadata': {'renderTypeConfig': {'visible': {'table': True}}, 'custom_fields': {'Scope': {'Country': 'Bahamas'}}, 'availableDisplayTypes': ['table', 'fatrow', 'page']}, 'name': 'Projects in Bahamas', 'tableId': 527904, 'totalTimesRated': 0, 'id': 'mvag-axbk'}
