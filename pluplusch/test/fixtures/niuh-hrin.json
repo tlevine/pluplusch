@@ -1,4 +1,5 @@
 {
+  "catalog": "https://data.cityofnewyork.us",
   "id" : "niuh-hrin",
   "name" : "Commuter Van Services - Vehicles",
   "attribution" : "Taxi and Limousine Commission (TLC)",

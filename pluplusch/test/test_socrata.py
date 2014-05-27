@@ -65,9 +65,18 @@ def test_standardize_tags():
     }
     n.assert_dict_equal(observed, expected)
 
-@n.nottest
 def test_standardize_niuh_hrin():
     with open(os.path.join('pluplusch', 'test', 'fixtures', 'niuh-hrin.json'), 'r') as fp:
         original = json.load(fp)
     observed = socrata.standardize(original)
-    expected = {}
+    expected = {
+        'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/5fuc-pqz2',
+        'creator_name': 'NYC OpenData',
+        'date': datetime.datetime(2014, 1, 8, 15, 37, 53),
+        'download_url': None,
+            # Or https://data.cityofnewyork.us/download/niuh-hrin/XLS ?
+        'tags': set(),
+        'title': 'Commuter Van Services - Vehicles',
+        'url': 'https://data.cityofnewyork.us/d/niuh-hrin',
+    }
+    n.assert_dict_equal(observed, expected)
