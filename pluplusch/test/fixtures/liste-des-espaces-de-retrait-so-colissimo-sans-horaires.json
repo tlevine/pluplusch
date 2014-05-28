@@ -1,7 +1,7 @@
 {
   "datasetid": "liste-des-espaces-de-retrait-so-colissimo-sans-horaires",
   "catalog": "http://data.iledefrance.fr",
-  "has_records": True,
+  "has_records": true,
   "features": [
     "analyze",
     "geo"

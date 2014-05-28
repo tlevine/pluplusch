@@ -53,5 +53,5 @@ def test_standardize_titles():
 
     n.assert_dict_equal(observed, expected)
     observed_colnames = ods.colnames(should_not_run, original)
-    expected_colnames = ['ident_pr', 'nom_point_de_retrait', 'adresse_1', 'adresse_2', 'adresse_3', 'adresse_4', 'code_postal', 'code_departement', 'ville', 'accessibilite_perssonnes_a_mobilite_reduite', 'type', 'wgs84']
+    expected_colnames = ['bibliotheque', 'rang', 'prets', 'type_de_document', 'titre', 'auteur']
     n.assert_list_equal(observed_colnames, expected_colnames)
