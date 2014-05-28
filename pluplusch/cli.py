@@ -22,10 +22,15 @@ def arg_parser():
     parser.add_argument('--full', '-f', action = 'store_true', default = False,
         help = 'Download the full data files rather than just the metadata files.')
 
+    parser.add_argument('--silent', '-s', action = 'store_true', default = False,
+        help = 'Download stuff, but don\'t print anything to the screen.')
+
     return parser
 
 def main(stdout = sys.stdout):
     p = arg_parser().parse_args()
+    if p.silent:
+        stdout = os.devnull
 
     generator = pluplusch(catalogs = p.catalog, standardize = True,
                           force_colnames = p.force_colnames,
