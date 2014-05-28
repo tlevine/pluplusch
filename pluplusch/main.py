@@ -10,6 +10,8 @@ import requests
 
 import pluplusch.index as i
 
+cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch')
+
 def getlogger():
     logger = logging.getLogger(__name__)
     fp_stream = logging.StreamHandler()
@@ -18,7 +20,7 @@ def getlogger():
     return logger
 logger = getlogger()
 
-def _pluplusch(get, catalogs = [], standardize = True, download_data = False):
+def _pluplusch(get, catalogs = [], standardize = True, force_colnames = False):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
@@ -30,7 +32,7 @@ def _pluplusch(get, catalogs = [], standardize = True, download_data = False):
         doesn't know about the catalog
     standardize
         Should the metadata schema be standardized across softwares?
-    download_data
+    force_colnames
         Should the full data file be downloaded if needed?
         (This is only relevant if standardize is True.)
 
@@ -61,7 +63,7 @@ def _pluplusch(get, catalogs = [], standardize = True, download_data = False):
                     out['_software'] = catalog_software
                 else:
                     out = submodules[catalog_software].standardize(dataset)
-                    if catalog_software == 'ckan' and not download_data:
+                    if catalog_software == 'ckan' and not force_colnames:
                         # Getting column names from CKAN involves downloading all the data
                         out['colnames'] = set()
                     else:
@@ -79,14 +81,30 @@ def _pluplusch(get, catalogs = [], standardize = True, download_data = False):
         if queue != []:
             yield queue.pop(0)
 
-def pluplusch(catalogs = [], standardize = True, download_data = False,
-        cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch')):
+def get(url, cache_dir = cache_dir):
+    @cache(cache_dir, mutable = False)
+    def _get(url):
+        return requests.get(url, verify = False)
+
+    try:
+        response = _get(url)
+    except Exception as e:
+        logger.error('Could not download ' + url)
+        logger.error(e)
+        raise e
+    if response.ok:
+        return response
+    else:
+        raise ValueError('%d response at %s' % (response.status_code, url))
+
+def pluplusch(catalogs = [], standardize = True, force_colnames = False,
+              get = get):
     '''
     pluplusch downloads data from open data websites. Here are
     its inputs.
 
-    cache_dir
-        Directory to store the cache in
+    get
+        Function that takes a url and returns a response
     catalogs
         List of catalogs to download, each item being either
         a full URL string, including the scheme, or a tuple
@@ -94,27 +112,12 @@ def pluplusch(catalogs = [], standardize = True, download_data = False,
         doesn't know about the catalog
     standardize
         Should the metadata schema be standardized across softwares?
-    download_data
-        Should the full data file be downloaded if needed?
+    force_colnames
+        Should the full data file be downloaded if needed for colnames?
         (This is only relevant if standardize is True.)
 
     It returns a generator of datasets.
     '''
 
-    @cache(cache_dir, mutable = False)
-    def _get(url):
-        return requests.get(url, verify = False)
-    def get(url):
-        try:
-            response = _get(url)
-        except Exception as e:
-            logger.error('Could not download ' + url)
-            logger.error(e)
-            raise e
-        if response.ok:
-            return response
-        else:
-            raise ValueError('%d response at %s' % (response.status_code, url))
-
     yield from _pluplusch(get, catalogs = catalogs, standardize = standardize,
-                          download_data = download_data)
+                          force_colnames = force_colnames)
