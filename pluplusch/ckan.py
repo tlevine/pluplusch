@@ -78,10 +78,17 @@ def search(get, catalog, page):
 
 def rest(get, catalog, datasetid):
     url = urljoin(catalog, '/api/rest/dataset/%s' % datasetid)
-    response = get(url)
-    dataset = json.loads(response.text)
-    dataset['catalog'] = catalog
-    return dataset
+    try:
+        response = get(url)
+    except Exception as e:
+        logger.error('Error downloading %s:\n%s' % (url, e))
+    else:
+        if response.ok:
+            dataset = json.loads(response.text)
+        else:
+            dataset = {}
+        dataset['catalog'] = catalog
+        return dataset
 
 def metadata(get, catalog):
     search_page = functools.partial(search, get, catalog)
