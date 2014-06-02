@@ -92,7 +92,10 @@ def metadata(get, catalog):
                 break
             else:
                 for dataset_id in result:
-                    yield rest(get, catalog, dataset_id)
+                    try:
+                        yield rest(get, catalog, dataset_id)
+                    except Exception as e:
+                        logger.error('Error at %s on page %d of %s:\n%s' % (dataset_id, page, catalog, e))
         except Exception as e:
             logger.error('Error at page %d of %s:\n%s' % (page, catalog, e))
 
