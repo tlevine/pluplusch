@@ -2,6 +2,8 @@ import os
 from concurrent.futures import ThreadPoolExecutor
 import logging
 import functools
+from traceback import print_exc
+from io import StringIO
 
 from thready import threaded
 from pickle_warehouse import Warehouse
@@ -61,8 +63,10 @@ def _pluplusch(get, catalogs = [], standardize = True, force_colnames = False):
                 dataset = next(generator)
             except StopIteration:
                 break
-            except Exception as e:
-                logger.error('Error at %s:\n%s' % (catalog_name, e))
+            except:
+                not_file = StringIO()
+                print_exc(file = not_file)
+                logger.error('Error at %s:\n%s\n' % (catalog_name, not_file.getvalue()))
             else:
                 if not standardize:
                     out = dataset
