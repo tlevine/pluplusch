@@ -55,8 +55,15 @@ def _pluplusch(get, catalogs = [], standardize = True, force_colnames = False):
 
     def enqueue_datasets(catalog_name_software):
         catalog_name, catalog_software = catalog_name_software
-        try:
-            for dataset in submodules[catalog_software].metadata(get, catalog_name):
+        generator = submodules[catalog_software].metadata(get, catalog_name)
+        while True:
+            try:
+                dataset = next(generator)
+            except StopIteration:
+                break
+            except Exception as e:
+                logger.error('Error at %s:\n%s' % (catalog_name, e))
+            else:
                 if not standardize:
                     out = dataset
                     out['_catalog'] = catalog_name
@@ -69,8 +76,6 @@ def _pluplusch(get, catalogs = [], standardize = True, force_colnames = False):
                     else:
                         out['colnames'] = submodules[catalog_software].colnames(get, dataset)
                 queue.append(out)
-        except Exception as e:
-            logger.error(e)
         running.remove(catalog_name)
 
     threaded(catalog_names_softwares, enqueue_datasets, join = False)
