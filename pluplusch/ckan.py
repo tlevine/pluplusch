@@ -94,7 +94,7 @@ def metadata(get, catalog):
                 for dataset_id in result:
                     yield rest(get, catalog, dataset_id)
         except Exception as e:
-            logger.error('Error at page %d:\n%s' % (page, e))
+            logger.error('Error at page %d of %s:\n%s' % (page, catalog, e))
 
 def download_url(dataset):
     for resource in dataset['resources']:

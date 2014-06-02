@@ -1,4 +1,5 @@
 import datetime
+import pickle, os
 from collections import namedtuple
 
 import nose.tools as n
@@ -15,6 +16,23 @@ def test_search():
     fake_get = lambda _: Response('{"results":[{"a":3}]}')
     observed = ckan.search(fake_get, 'https://foo-catalog.sh', 2)
     n.assert_list_equal(observed, [{'a': 3}])
+
+    with open(os.path.join('pluplusch', 'test', 'fixtures', 'dataset?q=&start=1'), 'rb') as fp:
+        error, response = pickle.load(fp)
+    fake_get = lambda _: response
+    observed = ckan.search(fake_get, 'https://foo-catalog.sh', 1)
+    expected = [
+        '02031-bathy-5m-5-meter-bathymetric-contours-derived-from-data-collected-during-u-s-geological-',
+        '02031-bathy-trk-geophysical-surveys-of-bear-lake-utah-idaho-september-2002-bathymetry-trackli',
+        '02031-chrp-500-geophysical-surveys-of-bear-lake-utah-idaho-september-2002-shot-point-navigati',
+        '02031-chrp-sol-geophysical-surveys-of-bear-lake-utah-idaho-september-2002-seismic-navigation-s',
+        '02031-chrpsht-geophysical-surveys-of-bear-lake-utah-idaho-september-2002-shot-point-navigatio',
+        '02031-chrptrk-geophysical-surveys-of-bear-lake-utah-idaho-september-2002-chirp-seismic-trackl',
+        '02031-sss-trk-geophysical-surveys-of-bear-lake-utah-idaho-september-2002-sidescan-sonar-track',
+        '02031-svp-geophysical-surveys-of-bear-lake-utah-idaho-september-2002-sound-velocity-profiles',
+        '02trkln-boomer-seismic-reflection-trackline-data-for-usgs-cruise-00scc02',
+        '04trkln-boomer-seismic-reflection-trackline-data-for-usgs-cruise-00scc04']
+    n.assert_list_equal(observed, expected)
 
 def test_rest():
     fake_get = lambda _: Response('{}')
