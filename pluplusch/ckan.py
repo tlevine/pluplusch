@@ -85,10 +85,8 @@ def rest(get, catalog, datasetid):
     else:
         if response.ok:
             dataset = json.loads(response.text)
-        else:
-            dataset = {}
-        dataset['catalog'] = catalog
-        return dataset
+            dataset['catalog'] = catalog
+            return dataset
 
 def metadata(get, catalog):
     search_page = functools.partial(search, get, catalog)
@@ -100,9 +98,12 @@ def metadata(get, catalog):
             else:
                 for dataset_id in result:
                     try:
-                        yield rest(get, catalog, dataset_id)
+                        dataset = rest(get, catalog, dataset_id)
                     except Exception as e:
                         logger.error('Error at %s on page %d of %s:\n%s' % (dataset_id, page, catalog, e))
+                    else:
+                        if dataset != None:
+                            yield dataset
         except Exception as e:
             logger.error('Error at page %d of %s:\n%s' % (page, catalog, e))
 
