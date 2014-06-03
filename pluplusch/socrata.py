@@ -86,9 +86,12 @@ def metadata(get, domain):
     'Emit datasets with non-standardized, Socrata metadata.'
     pages = (views_page(get, domain, page_number) for page_number in itertools.count(1))
     for search_results in itertools.takewhile(lambda x: x != [], pages):
-        yield from search_results
+        # Why can't everyone just switch to Python 3!?
+        for x in search_results:
+            yield x
 
-def standardize(original:dict) -> dict:
+def standardize(original):
+    'dict -> dict'
     is_tabular = original.get('displayType') == 'table' or original.get('viewType') == 'tabular'
     data = {
         'url': '%(catalog)s/d/%(id)s' % original,
@@ -101,9 +104,10 @@ def standardize(original:dict) -> dict:
     }
     return data
 
-def colnames(get, original:dict) -> list:
+def colnames(get, original):
     '''
     Get the column names for a dataset
+    function, dict -> list
     '''
     # Ignore the get function; this is so that different modules'
     # colnames functions have the same signature.

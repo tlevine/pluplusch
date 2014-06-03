@@ -1,3 +1,6 @@
+# -*- encoding: utf-8 -*-
+from __future__ import unicode_literals
+
 import os, json
 import datetime
 from collections import namedtuple

@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 import datetime
 import json
 from logging import getLogger
@@ -31,9 +32,10 @@ def metadata(get, catalog):
         dataset['catalog'] = catalog
     return result
 
-def standardize(original:dict) -> dict:
+def standardize(original):
     '''
     Nonstandard metadata to standard metadata
+    dict -> dict
     '''
     data = {
         'url': '%(catalog)s/explore/dataset/%(datasetid)s' % original,
@@ -46,9 +48,10 @@ def standardize(original:dict) -> dict:
     }
     return data
 
-def colnames(get, original:dict) -> list:
+def colnames(get, original):
     '''
     Get the column names for a dataset
+    function, dict -> list
     '''
     # Ignore the get function; this is so that different modules'
     # colnames functions have the same signature.
