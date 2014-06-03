@@ -98,8 +98,7 @@ def get(url, cache_dir = cache_dir):
     try:
         response = _get(url)
     except Exception as e:
-        logger.error('Could not download ' + url)
-        logger.error(e)
+        logger.error('Could not download %s:\n%s' % (url, e))
         raise e
     if response.ok:
         return response
