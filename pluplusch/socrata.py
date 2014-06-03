@@ -71,6 +71,8 @@ catalogs = [
     (('https','http',), 'data.montgomerycountymd.gov'),
     (('https','http',), 'data.acgov.org'),
     (('https','http',), 'data.medicare.gov'),
+    (('https','http',), 'controllerdata.lacity.org'),
+    (('https','http',), 'data.lacity.org'),
 ]
 
 def views_page(get, catalog, page_number):
