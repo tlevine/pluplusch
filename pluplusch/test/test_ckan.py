@@ -7,13 +7,13 @@ n.assert_dict_equal.__self__.maxDiff = None
 
 import pluplusch.ckan as ckan
 
-Response = namedtuple('Response', ['text'])
+Response = namedtuple('Response', ['text','ok'])
 
 def should_not_run(_):
     raise AssertionError('This function should not be called.')
 
 def test_search():
-    fake_get = lambda _: Response('{"results":[{"a":3}]}')
+    fake_get = lambda _: Response('{"results":[{"a":3}]}', True)
     observed = ckan.search(fake_get, 'https://foo-catalog.sh', 2)
     n.assert_list_equal(observed, [{'a': 3}])
 
@@ -35,7 +35,7 @@ def test_search():
     n.assert_list_equal(observed, expected)
 
 def test_rest():
-    fake_get = lambda _: Response('{}')
+    fake_get = lambda _: Response('{}', True)
     observed = ckan.rest(fake_get, 'bar-catalog', 'whatever')
     n.assert_dict_equal(observed, {'catalog': 'bar-catalog'})
 
@@ -137,7 +137,7 @@ def test_standardize():
     n.assert_dict_equal(observed, expected)
 
     original['resources'][-1]['format'] = 'csv'
-    fake_get = lambda url: Response('peanut.butter,jelly\r\n')
+    fake_get = lambda url: Response('peanut.butter,jelly\r\n', True)
     observed = ckan.standardize(original)
     expected = {
         "url": "http://dados.gov.br/dataset/adequacao-de-acesso-rodoviario",
