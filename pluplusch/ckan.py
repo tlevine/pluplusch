@@ -8,7 +8,7 @@ except ImportError:
     from urlparse import urljoin
 from logging import getLogger
 
-from pluplusch.csv_colnames import colnames as _colnames
+from pluplusch.util import colnames as _colnames
 
 logger = getLogger(__name__)
 
