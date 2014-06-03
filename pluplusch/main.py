@@ -128,5 +128,7 @@ def pluplusch(catalogs = [], standardize = True, force_colnames = False,
     It returns a generator of datasets.
     '''
 
-    yield from _pluplusch(get, catalogs = catalogs, standardize = standardize,
-                          force_colnames = force_colnames)
+    # Ugh Python2
+    for x in _pluplusch(get, catalogs = catalogs, standardize = standardize,
+                        force_colnames = force_colnames):
+        yield x

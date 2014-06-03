@@ -2,7 +2,10 @@ from io import StringIO
 import datetime
 import json
 import functools, itertools
-from urllib.parse import urljoin
+try:
+    from urllib.parse import urljoin
+except ImportError:
+    from urlparse import urljoin
 from logging import getLogger
 
 from pluplusch.csv_colnames import colnames as _colnames
@@ -125,6 +128,7 @@ def standardize(original):
     }
     return standardized_dataset
 
-def colnames(get, original:dict) -> list:
+def colnames(get, original):
+    'function, dict -> list'
     dl = download_url(original)
     return [] if dl == None else _colnames(StringIO(get(dl).text))
