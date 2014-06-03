@@ -4,6 +4,10 @@ import logging
 import functools
 from traceback import print_exc
 from io import StringIO
+try:
+    from urllib.parse import urljoin
+except ImportError:
+    from urlparse import urljoin
 
 from thready import threaded
 from pickle_warehouse import Warehouse
@@ -68,17 +72,18 @@ def _pluplusch(get, catalogs = [], standardize = True, force_colnames = False):
                 print_exc(file = not_file)
                 logger.error('Error at %s:\n%s\n' % (catalog_name, not_file.getvalue()))
             else:
-                if not standardize:
-                    out = dataset
-                    out['_catalog'] = catalog_name
-                    out['_software'] = catalog_software
-                else:
+                if standardize:
                     out = submodules[catalog_software].standardize(dataset)
+                    out['download_url'] = urljoin(dataset['url'], dataset['download_url'])
                     if catalog_software == 'ckan' and not force_colnames:
                         # Getting column names from CKAN involves downloading all the data
                         out['colnames'] = set()
                     else:
                         out['colnames'] = submodules[catalog_software].colnames(get, dataset)
+                else:
+                    out = dataset
+                    out['_catalog'] = catalog_name
+                    out['_software'] = catalog_software
                 queue.append(out)
         running.remove(catalog_name)
 
