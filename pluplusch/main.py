@@ -74,7 +74,8 @@ def _pluplusch(get, catalogs = [], standardize = True, force_colnames = False):
             else:
                 if standardize:
                     out = submodules[catalog_software].standardize(dataset)
-                    out['download_url'] = urljoin(dataset['url'], dataset['download_url'])
+                    if out['download_url'] != None:
+                        out['download_url'] = urljoin(out['url'], out['download_url'])
                     if catalog_software == 'ckan' and not force_colnames:
                         # Getting column names from CKAN involves downloading all the data
                         out['colnames'] = set()
