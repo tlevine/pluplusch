@@ -30,7 +30,7 @@ def metadata(get, catalog):
     result = json.loads(response.text)['datasets']
     for dataset in result:
         dataset['catalog'] = catalog
-        yield result
+        yield dataset
 
 def standardize(original):
     '''
