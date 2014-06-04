@@ -91,7 +91,7 @@ def _pluplusch(get, catalogs = [], standardize = True, force_colnames = False):
     threaded(catalog_names_softwares, enqueue_datasets, join = False)
 
     from time import sleep
-    while len(running) > 0:
+    while len(running) > 0 or queue != []:
         sleep(0.0001)
         if queue != []:
             yield queue.pop(0)
