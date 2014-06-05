@@ -5,9 +5,9 @@ bin/pluplusch
 pluplusch/__init__.py
 pluplusch/ckan.py
 pluplusch/cli.py
-pluplusch/csv_colnames.py
 pluplusch/index.py
 pluplusch/main.py
 pluplusch/meta.py
 pluplusch/opendatasoft.py
 pluplusch/socrata.py
+pluplusch/util.py
