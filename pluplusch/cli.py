@@ -48,8 +48,7 @@ def main(stdout = sys.stdout, stderr = sys.stderr):
             try:
                 response = get(metadata['download_url'])
             except:
-                stderr.write('Error downloading %s' % metadata['download_url'])
-                raise
+                stderr.write('Skipping %s because of an error' % metadata['download_url'])
             if p.data_dir != None and response.ok and response.url not in data_warehouse:
                 data_warehouse[response.url] = response.content
         if p.urls:
