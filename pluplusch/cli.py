@@ -10,7 +10,7 @@ def arg_parser():
     parser = argparse.ArgumentParser()
 
     cache_dir = os.path.join(os.path.expanduser('~'), '.pluplusch')
-    parser.add_argument('--cache-dir', '-d', metavar = 'DIR', default = cache_dir,
+    parser.add_argument('--cache-dir', '-c', metavar = 'DIR', default = cache_dir,
         help = 'Use the specified directory as the cache directory; the default is "%s".' % cache_dir)
     parser.add_argument('--force-colnames', '-D', action = 'store_true', default = False,
         help = 'Set this flag to download full datasets when they are helpful, rather than relying on metadata files.')
@@ -24,6 +24,9 @@ def arg_parser():
 
     parser.add_argument('--silent', '-s', action = 'store_true', default = False,
         help = 'Download stuff, but don\'t print anything to the screen.')
+
+    parser.add_argument('--data', '-d', metavar = 'DIR',
+        help = 'Save dataset files to a directory (in addition to caching).')
 
     return parser
 
