@@ -4,6 +4,9 @@ import argparse
 import json
 import sys
 
+from pickle_warehouse import Warehouse
+import pickle_warehouse.serializers as s
+
 from pluplusch.main import pluplusch, get
 
 def arg_parser():
@@ -38,9 +41,14 @@ def main(stdout = sys.stdout):
     generator = pluplusch(catalogs = p.catalog, standardize = True,
                           force_colnames = p.force_colnames,
                           get = lambda url: get(url, cache_dir = p.cache_dir))
+    if p.data_dir != None:
+        data_warehouse = Warehouse(p.data_dir, serializer = s.identity)
     for metadata in generator:
-        if p.full and metadata['download_url'] != None:
-            get(metadata['download_url'])
+        if (p.full and metadata['download_url'] != None) or p.data_dir != None:
+            response = get(metadata['download_url'])
+        if p.data_dir != None:
+            if response.ok and response.url not in data_warehouse:
+                data_warehouse[response.url] = response.content
         if p.urls:
             url = metadata['download_url']
             if url != None:
