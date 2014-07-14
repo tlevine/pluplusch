@@ -10,6 +10,11 @@ from logging import getLogger
 
 logger = getLogger(__name__)
 
+try:
+    UTC = datetime.timezone.utc
+except AttributeError:
+    UTC = None # Dates will be interpreted in local time on Python 2.
+
 catalogs = [
     (('https','http',), 'data.colorado.gov'),
     (('https','http',), 'data.nola.gov'),
@@ -101,7 +106,7 @@ def standardize(original):
         'title': original['name'],
         'creator_name' : original['owner']['displayName'],
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],
-        'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified']), tz = datetime.timezone.utc),
+        'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified']), tz = UTC),
         'tags' : set(original.get('tags',[])),
     }
     return data
