@@ -28,12 +28,12 @@ def arg_parser():
     parser.add_argument('--silent', '-s', action = 'store_true', default = False,
         help = 'Download stuff, but don\'t print anything to the screen.')
 
-    parser.add_argument('--data', '-d', metavar = 'DIR',
+    parser.add_argument('--data-dir', '-d', metavar = 'DIR',
         help = 'Save dataset files to a directory (in addition to caching).')
 
     return parser
 
-def main(stdout = sys.stdout):
+def main(stdout = sys.stdout, stderr = sys.stderr):
     p = arg_parser().parse_args()
     if p.silent:
         stdout = os.devnull
@@ -44,10 +44,13 @@ def main(stdout = sys.stdout):
     if p.data_dir != None:
         data_warehouse = Warehouse(p.data_dir, serializer = s.identity)
     for metadata in generator:
-        if (p.full and metadata['download_url'] != None) or p.data_dir != None:
-            response = get(metadata['download_url'])
-        if p.data_dir != None:
-            if response.ok and response.url not in data_warehouse:
+        if (p.full or p.data_dir != None) and metadata['download_url'] != None:
+            try:
+                response = get(metadata['download_url'])
+            except:
+                stderr.write('Error downloading %s' % metadata['download_url'])
+                raise
+            if p.data_dir != None and response.ok and response.url not in data_warehouse:
                 data_warehouse[response.url] = response.content
         if p.urls:
             url = metadata['download_url']
