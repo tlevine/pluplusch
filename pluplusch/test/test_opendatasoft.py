@@ -20,7 +20,7 @@ def test_metadata():
 
     observed = ods.metadata(get, catalog)
     expected = [{'foo':8,'catalog':catalog}]
-    n.assert_list_equal(observed, expected)
+    n.assert_list_equal(list(observed), expected)
 
 def test_standardize_espaces_de_retrait():
     with open(os.path.join('pluplusch','test','fixtures','liste-des-espaces-de-retrait-so-colissimo-sans-horaires.json'), 'r') as fp:
