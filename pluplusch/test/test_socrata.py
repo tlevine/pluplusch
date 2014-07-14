@@ -24,7 +24,7 @@ def test_standardize_t6ck_kg3u():
         "title": "Measure Overviews",
         "creator_name" : "Erin Miller",
         "creator_id": "https://healthmeasures.aspe.hhs.gov/d/dg59-t3xw",
-        "date": datetime.datetime(2014, 4, 9, 20, 39, 43),
+        "date": datetime.datetime(2014, 4, 9, 20, 39, 43, tzinfo = datetime.timezone.utc),
         "tags" : {"measures"},
     }
     n.assert_dict_equal(observed, expected)
@@ -37,7 +37,7 @@ def test_standardize_zt9s_n5aj():
         'url': 'https://data.cityofnewyork.us/d/zt9s-n5aj',
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/5fuc-pqz2',
         'creator_name': 'NYC OpenData',
-        'date': datetime.datetime(2014, 1, 24, 18, 20, 58),
+        'date': datetime.datetime(2014, 1, 24, 18, 20, 58, tzinfo = datetime.timezone.utc),
         'download_url': 'https://data.cityofnewyork.us/resource/zt9s-n5aj.csv',
         'tags': {'lifelong learning'},
         'title': 'SAT (College Board) 2010 School Level Results',
@@ -59,7 +59,7 @@ def test_standardize_tags():
     expected = {
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/67n2-h4v3',
         'creator_name': 'UNDP Transparency',
-        'date': datetime.datetime(2012, 11, 29, 23, 45, 26),
+        'date': datetime.datetime(2012, 11, 29, 23, 45, 26, tzinfo = datetime.timezone.utc),
         'download_url': 'https://data.undp.org/resource/mvag-axbk.csv',
         'tags': set(),
         'title': 'Projects in Bahamas',
@@ -74,7 +74,7 @@ def test_standardize_niuh_hrin():
     expected = {
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/5fuc-pqz2',
         'creator_name': 'NYC OpenData',
-        'date': datetime.datetime(2014, 1, 8, 15, 37, 53),
+        'date': datetime.datetime(2014, 1, 8, 15, 37, 53, tzinfo = datetime.timezone.utc),
         'download_url': None,
             # Or https://data.cityofnewyork.us/download/niuh-hrin/XLS ?
         'tags': set(),

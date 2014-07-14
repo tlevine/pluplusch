@@ -101,7 +101,7 @@ def standardize(original):
         'title': original['name'],
         'creator_name' : original['owner']['displayName'],
         'creator_id': 'https://healthmeasures.aspe.hhs.gov/d/' + original['owner']['id'],
-        'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified'])),
+        'date': datetime.datetime.fromtimestamp(max(original.get(key, 0) for key in ['createdAt','publicationDate', 'rowsUpdatedAt', 'viewLastModified']), tz = datetime.timezone.utc),
         'tags' : set(original.get('tags',[])),
     }
     return data
