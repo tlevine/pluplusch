@@ -118,6 +118,6 @@ def colnames(get, original):
     Get the column names for a dataset
     function, dict -> list
     '''
-    # Ignore the get function; this is so that different modules'
-    # colnames functions have the same signature.
-    return [column['fieldName'] for column in original.get('columns',[])]
+    url = 'https://data.cityofnewyork.us/views/%(id)s' % original
+    view = get(url).json()
+    return [column['fieldName'] for column in view.get('columns',[])]
